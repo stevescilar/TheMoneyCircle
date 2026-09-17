@@ -28,4 +28,33 @@ class Member extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function totalBudgeted(): float
+    {
+        return (float) $this->categories()->sum('planned_amount');
+    }
+
+    public function totalSpent(): float
+    {
+        return (float) $this->categories->sum(fn (Category $category) => $category->spent());
+    }
+
+    public function remainingToSpend(): float
+    {
+        return (float) $this->totalBudgeted() - $this->totalSpent();
+    }
+
+    public function percentBudgetSpent(): float
+    {
+        if($this->totalBudgeted() == 0){
+            return 0;
+        }
+        return round (($this->totalSpent() / $this->totalBudgeted()) * 100, 1);
+
+    }
+
+    public function isOverSpent(): bool
+    {
+        return $this->totalSpent() > $this->totalBudgeted();
+    }
+
 }
