@@ -10,12 +10,17 @@ export default {
     ],
 
     theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
+    extend: {
+        colors: {
+            'brand-green': '#00381B',
+            'brand-green-light': '#033D24',
+            'brand-gold': '#C59121',
+        },
+        fontFamily: {
+            sans: ['Figtree', ...defaultTheme.fontFamily.sans],
         },
     },
+},
 
     plugins: [forms],
 };
