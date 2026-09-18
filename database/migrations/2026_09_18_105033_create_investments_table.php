@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('investments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->enum('type', ['mmf', 'sacco', 't_bill', 'shares', 'bonds']);
+            $table->string('label')->nullable();
+            $table->decimal('balance', 12, 2)->default(0);
             $table->timestamps();
         });
     }

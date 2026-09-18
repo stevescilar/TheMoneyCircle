@@ -4,14 +4,25 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
-class Member extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+class Member extends Authenticatable
 {
-    use HasFactory;
-    protected $fillable = ['coach_id', 'name', 'email', 'phone', 'join_date', 'status'];
-    protected $casts = ['join_date' => 'date'];
+    use HasApiTokens, HasFactory, Notifiable;
+
+    protected $fillable = ['coach_id', 'name', 'email', 'phone', 'join_date', 'status', 'password'];
+
+    protected $hidden = ['password'];
+
+    protected $casts = [
+        'join_date' => 'date',
+        'password' => 'hashed',
+    ];
 
     public function coach(): BelongsTo
     {
@@ -70,5 +81,29 @@ class Member extends Model
             ->withBudgetTotals()
             ->groupBy('members.id')
             ->havingRaw('COALESCE(total_spent, 0) > COALESCE(total_budgeted, 0)');
+    }
+    public function debts(): HasMany
+    {
+        return $this->hasMany(Debt::class);
+    }
+
+    public function emergencyFund(): HasOne
+    {
+        return $this->hasOne(EmergencyFund::class);
+    }
+
+    public function savingsGoals(): HasMany
+    {
+        return $this->hasMany(SavingsGoal::class);
+    }
+
+    public function investments(): HasMany
+    {
+        return $this->hasMany(Investment::class);
+    }
+
+    public function monthlyReflections(): HasMany
+    {
+        return $this->hasMany(MonthlyReflection::class);
     }
 }

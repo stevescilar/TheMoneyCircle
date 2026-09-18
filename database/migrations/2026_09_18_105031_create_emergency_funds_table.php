@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('emergency_funds', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->decimal('target_amount', 12, 2);
+            $table->decimal('current_balance', 12, 2)->default(0);
             $table->timestamps();
         });
     }

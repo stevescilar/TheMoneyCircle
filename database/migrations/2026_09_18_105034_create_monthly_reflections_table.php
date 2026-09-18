@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('monthly_reflections', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->unsignedTinyInteger('financial_score'); // 1-10
+            $table->text('wins')->nullable();
+            $table->text('challenges')->nullable();
+            $table->text('coach_notes')->nullable();
+            $table->date('period_month'); // first day of the month this reflection covers
             $table->timestamps();
         });
     }

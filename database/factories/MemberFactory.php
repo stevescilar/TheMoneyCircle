@@ -24,6 +24,7 @@ class MemberFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'join_date' => now(),
             'status' =>'active',
+            'password' => 'password'
         ];
     }
 }
