@@ -19,5 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/coach-dashboard', [CoachDashboardController::class,'index'])->name('coach.dashboard');
     Route::get('/members/{member}', [MemberDetailController::class, 'show'])->name('members.show');
+    Route::patch('/members/{member}/reflections/{reflection}/notes', [MemberDetailController::class, 'updateReflectionNotes'])
+    ->name('members.reflections.notes');
 });
 require __DIR__.'/auth.php';

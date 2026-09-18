@@ -106,4 +106,26 @@ class Member extends Authenticatable
     {
         return $this->hasMany(MonthlyReflection::class);
     }
+
+    public function totalDebt(): float
+    {
+        return (float) $this->debts()->sum('current_balance');
+    }
+
+    public function totalInvestments(): float
+    {
+        return (float) $this->investments()->sum('balance');
+    }
+
+    public function investmentsByType(): \Illuminate\Support\Collection
+    {
+        return $this->investments()->get()->groupBy('type')->map(
+            fn ($group) => $group->sum('balance')
+        );
+    }
+
+    public function latestReflection(): ?MonthlyReflection
+    {
+        return $this->monthlyReflections()->orderByDesc('period_month')->first();
+    }
 }

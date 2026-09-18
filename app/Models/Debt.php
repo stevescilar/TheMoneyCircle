@@ -17,4 +17,29 @@ class Debt extends Model
     {
         return $this->belongsTo(Member::class);
     }
+
+    public function monthsUntilTargetPayoff(): ?int
+    {
+        if (! $this->target_payoff_date) {
+            return null;
+        }
+
+        return max(0, (int) now()->diffInMonths($this->target_payoff_date, false));
+    }
+
+    public function requiredMonthlyPayment(): ?float
+    {
+        $months = $this->monthsUntilTargetPayoff();
+
+        if ($months === null) {
+            return null;
+        }
+
+        if ($months === 0) {
+            return (float) $this->current_balance;
+        }
+
+        return round((float) $this->current_balance / $months, 2);
+    }
+    
 }

@@ -4,6 +4,11 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\DebtController;
+use App\Http\Controllers\Api\EmergencyFundController;
+use App\Http\Controllers\Api\InvestmentController;
+use App\Http\Controllers\Api\MonthlyReflectionController;
+use App\Http\Controllers\Api\SavingsGoalController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -14,4 +19,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::post('/transactions', [TransactionController::class, 'store']);
+
+    Route::get('/savings-goals', [SavingsGoalController::class, 'index']);
+    Route::post('/savings-goals', [SavingsGoalController::class, 'store']);
+    Route::post('/savings-goals/{savingsGoal}/contribute', [SavingsGoalController::class, 'contribute']);
+
+    Route::get('/debts', [DebtController::class, 'index']);
+    Route::post('/debts', [DebtController::class, 'store']);
+    Route::put('/debts/{debt}', [DebtController::class, 'update']);
+
+    Route::get('/investments', [InvestmentController::class, 'index']);
+    Route::post('/investments', [InvestmentController::class, 'store']);
+    Route::put('/investments/{investment}', [InvestmentController::class, 'update']);
+
+    Route::get('/emergency-fund', [EmergencyFundController::class, 'show']);
+    Route::post('/emergency-fund', [EmergencyFundController::class, 'store']);
+    Route::post('/emergency-fund/contribute', [EmergencyFundController::class, 'contribute']);
+
+    Route::get('/monthly-reflections', [MonthlyReflectionController::class, 'index']);
+    Route::post('/monthly-reflections', [MonthlyReflectionController::class, 'store']);
 });
