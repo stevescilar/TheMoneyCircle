@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\DebtPayment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Debt extends Model
 {
@@ -16,6 +17,11 @@ class Debt extends Model
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(DebtPayment::class);
     }
 
     public function monthsUntilTargetPayoff(): ?int
@@ -41,5 +47,7 @@ class Debt extends Model
 
         return round((float) $this->current_balance / $months, 2);
     }
+
+    
     
 }

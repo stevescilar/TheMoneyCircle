@@ -46,7 +46,7 @@ class Member extends Authenticatable
 
     public function totalSpent(): float
     {
-        return (float) $this->categories->sum(fn (Category $category) => $category->spent());
+        return (float) $this->transactions()->where('type', 'expense')->sum('amount');
     }
 
     public function remainingToSpend(): float

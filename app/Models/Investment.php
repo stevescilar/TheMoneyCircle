@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\InvestmentContribution;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Investment extends Model
 {
@@ -16,5 +17,10 @@ class Investment extends Model
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function contributions(): HasMany
+    {
+        return $this->hasMany(InvestmentContribution::class);
     }
 }

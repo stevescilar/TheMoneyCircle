@@ -3,20 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Investment;
 use Illuminate\Http\Request;
 
 class InvestmentController extends Controller
 {
     public function index(Request $request)
     {
-        return response()->json(
-            $request->user()->investments()->get()->map(fn ($inv) => [
-                'id' => $inv->id,
-                'type' => $inv->type,
-                'label' => $inv->label,
-                'balance' => (float) $inv->balance,
-            ])
-        );
+        $investments = $request->user()->investments()->with('contributions')->get();
+
+        return response()->json($investments);
     }
 
     public function store(Request $request)
@@ -32,16 +28,34 @@ class InvestmentController extends Controller
         return response()->json($investment, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Investment $investment)
     {
-        $investment = $request->user()->investments()->findOrFail($id);
+        abort_unless($investment->member_id === $request->user()->id, 403);
 
         $validated = $request->validate([
-            'balance' => 'required|numeric|min:0',
+            'type' => 'sometimes|in:mmf,sacco,t_bill,shares,bonds',
+            'label' => 'sometimes|nullable|string|max:255',
+            'balance' => 'sometimes|numeric|min:0',
         ]);
 
         $investment->update($validated);
 
         return response()->json($investment);
+    }
+
+    public function contribute(Request $request, Investment $investment)
+    {
+        abort_unless($investment->member_id === $request->user()->id, 403);
+
+        $validated = $request->validate(['amount' => 'required|numeric|min:0.01']);
+
+        $investment->contributions()->create([
+            'amount' => $validated['amount'],
+            'contributed_at' => now(),
+        ]);
+
+        $investment->increment('balance', $validated['amount']);
+
+        return response()->json($investment->fresh('contributions'));
     }
 }

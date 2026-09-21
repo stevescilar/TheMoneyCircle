@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/categories', [CategoryController::class, 'index']);
@@ -27,10 +28,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/debts', [DebtController::class, 'index']);
     Route::post('/debts', [DebtController::class, 'store']);
     Route::put('/debts/{debt}', [DebtController::class, 'update']);
+    Route::post('/debts/{debt}/payments', [DebtController::class, 'recordPayment']);
 
     Route::get('/investments', [InvestmentController::class, 'index']);
     Route::post('/investments', [InvestmentController::class, 'store']);
     Route::put('/investments/{investment}', [InvestmentController::class, 'update']);
+    Route::post('/investments/{investment}/contributions', [InvestmentController::class, 'contribute']);
 
     Route::get('/emergency-fund', [EmergencyFundController::class, 'show']);
     Route::post('/emergency-fund', [EmergencyFundController::class, 'store']);
