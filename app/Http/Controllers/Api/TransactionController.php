@@ -7,13 +7,24 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
+    public function index(Request $request)
+    {
+        $transactions = $request->user()
+            ->transactions()
+            ->with('category:id,name,type')
+            ->orderByDesc('transacted_at')
+            ->paginate(20);
+
+        return response()->json($transactions);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'required|in:income,expense',
-            'amount' => 'required|numeric|min:0.01',
-            'description' => 'nullable|string|max:255',
-            'category_id' => 'nullable|exists:categories,id',
+            'type'          => 'required|in:income,expense',
+            'amount'        => 'required|numeric|min:0.01',
+            'description'   => 'nullable|string|max:255',
+            'category_id'   => 'nullable|exists:categories,id',
             'transacted_at' => 'nullable|date',
         ]);
 
@@ -27,6 +38,6 @@ class TransactionController extends Controller
             'transacted_at' => $validated['transacted_at'] ?? now(),
         ]);
 
-        return response()->json($transaction, 201);
+        return response()->json($transaction->load('category:id,name,type'), 201);
     }
 }

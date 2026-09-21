@@ -28,6 +28,6 @@ class MonthlyReflectionController extends Controller
             $validated
         );
 
-        return response()->json($reflection, 201);
+        return response()->json($reflection, $reflection->wasRecentlyCreated ? 201 : 200);
     }
 }
