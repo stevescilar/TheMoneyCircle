@@ -58,4 +58,25 @@ class InvestmentController extends Controller
 
         return response()->json($investment->fresh('contributions'));
     }
+
+    public function contributions(Request $request, Investment $investment)
+    {
+        abort_unless($investment->member_id === $request->user()->id, 403);
+
+        $contributions = $investment->contributions()
+            ->orderByDesc('contributed_at')
+            ->paginate(15);
+
+        return response()->json($contributions);
+    }
+
+    public function destroy(Request $request, Investment $investment)
+    {
+        abort_unless($investment->member_id === $request->user()->id, 403);
+
+        $investment->contributions()->delete();
+        $investment->delete();
+
+        return response()->json(null, 204);
+    }
 }

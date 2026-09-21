@@ -10,14 +10,7 @@ class SavingsGoalController extends Controller
 {
     public function index(Request $request)
     {
-        $goals = $request->user()->savingsGoals()->get()->map(fn ($goal) => [
-            'id' => $goal->id,
-            'goal_name' => $goal->goal_name,
-            'target_amount' => (float) $goal->target_amount,
-            'saved_amount' => (float) $goal->saved_amount,
-            'remaining' => $goal->remaining(),
-            'percent_complete' => $goal->percentComplete(),
-        ]);
+        $goals = $request->user()->savingsGoals()->get()->map(fn ($goal) => $this->shape($goal));
 
         return response()->json($goals);
     }
@@ -31,7 +24,7 @@ class SavingsGoalController extends Controller
 
         $goal = $request->user()->savingsGoals()->create($validated);
 
-        return response()->json($goal, 201);
+        return response()->json($this->shape($goal), 201);
     }
 
     public function contribute(Request $request, SavingsGoal $savingsGoal)
@@ -42,6 +35,27 @@ class SavingsGoalController extends Controller
 
         $savingsGoal->increment('saved_amount', $validated['amount']);
 
-        return response()->json($savingsGoal->fresh());
+        return response()->json($this->shape($savingsGoal->fresh()));
+    }
+
+    public function destroy(Request $request, SavingsGoal $savingsGoal)
+    {
+        abort_unless($savingsGoal->member_id === $request->user()->id, 403);
+
+        $savingsGoal->delete();
+
+        return response()->json(null, 204);
+    }
+
+    private function shape(SavingsGoal $goal): array
+    {
+        return [
+            'id'               => $goal->id,
+            'goal_name'        => $goal->goal_name,
+            'target_amount'    => (float) $goal->target_amount,
+            'saved_amount'     => (float) $goal->saved_amount,
+            'remaining'        => $goal->remaining(),
+            'percent_complete' => $goal->percentComplete(),
+        ];
     }
 }

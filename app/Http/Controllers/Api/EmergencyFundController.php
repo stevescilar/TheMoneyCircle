@@ -40,7 +40,7 @@ class EmergencyFundController extends Controller
             'target_amount' => (float) $fund->target_amount,
             'current_balance' => (float) $fund->current_balance,
             'percent_funded' => (float) $fund->percentFunded(),
-        ], 201);
+        ], $fund->wasRecentlyCreated ? 201 : 200);
     }
 
     public function update(Request $request)

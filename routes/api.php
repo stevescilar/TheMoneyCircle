@@ -24,19 +24,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/savings-goals', [SavingsGoalController::class, 'index']);
     Route::post('/savings-goals', [SavingsGoalController::class, 'store']);
     Route::post('/savings-goals/{savingsGoal}/contribute', [SavingsGoalController::class, 'contribute']);
+    Route::delete('/savings-goals/{savingsGoal}', [SavingsGoalController::class, 'destroy']);
 
     Route::get('/debts', [DebtController::class, 'index']);
     Route::post('/debts', [DebtController::class, 'store']);
     Route::put('/debts/{debt}', [DebtController::class, 'update']);
+    Route::delete('/debts/{debt}', [DebtController::class, 'destroy']);
     Route::post('/debts/{debt}/payments', [DebtController::class, 'recordPayment']);
 
     Route::get('/investments', [InvestmentController::class, 'index']);
     Route::post('/investments', [InvestmentController::class, 'store']);
     Route::put('/investments/{investment}', [InvestmentController::class, 'update']);
+    Route::delete('/investments/{investment}', [InvestmentController::class, 'destroy']);
     Route::post('/investments/{investment}/contributions', [InvestmentController::class, 'contribute']);
+    Route::get('/investments/{investment}/contributions', [InvestmentController::class, 'contributions']);
 
     Route::get('/emergency-fund', [EmergencyFundController::class, 'show']);
     Route::post('/emergency-fund', [EmergencyFundController::class, 'store']);
+    Route::put('/emergency-fund', [EmergencyFundController::class, 'update']);
     Route::post('/emergency-fund/contribute', [EmergencyFundController::class, 'contribute']);
 
     Route::get('/monthly-reflections', [MonthlyReflectionController::class, 'index']);

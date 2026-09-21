@@ -60,4 +60,14 @@ class DebtController extends Controller
 
         return response()->json($debt->fresh('payments'));
     }
+
+    public function destroy(Request $request, Debt $debt)
+    {
+        abort_unless($debt->member_id === $request->user()->id, 403);
+
+        $debt->payments()->delete();
+        $debt->delete();
+
+        return response()->json(null, 204);
+    }
 }
