@@ -11,7 +11,7 @@ class Debt extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['lender', 'current_balance', 'target_payoff_date'];
+    protected $fillable = ['member_id', 'lender', 'current_balance', 'target_payoff_date', 'coach_notes'];
     protected $casts = ['target_payoff_date' => 'date', 'current_balance' => 'decimal:2'];
 
     public function member(): BelongsTo

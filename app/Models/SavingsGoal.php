@@ -10,7 +10,7 @@ class SavingsGoal extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['member_id', 'goal_name', 'target_amount', 'saved_amount'];
+    protected $fillable = ['member_id', 'goal_name', 'target_amount', 'saved_amount', 'coach_notes'];
     protected $casts = ['target_amount' => 'decimal:2', 'saved_amount' => 'decimal:2'];
 
     public function member(): BelongsTo

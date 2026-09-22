@@ -75,7 +75,7 @@ class Member extends Authenticatable
         if($this->totalBudgeted() == 0){
             return 0;
         }
-        return ($this->totalSpent() / $this->totalBudgeted()) * 100;
+        return round(($this->totalSpent() / $this->totalBudgeted()) * 100, 1);
     }
 
     public function isOverSpent(): bool

@@ -42,6 +42,7 @@ class CategoryController extends Controller
             'percent_complete' => $category->percentageComplete(),
             'period_start'    => $category->period_start->toDateString(),
             'period_end'      => $category->period_end->toDateString(),
+            'coach_notes'     => $category->coach_notes,
         ];
     }
 }

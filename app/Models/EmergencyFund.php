@@ -10,7 +10,7 @@ class EmergencyFund extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['member_id', 'target_amount', 'current_balance'];
+    protected $fillable = ['member_id', 'target_amount', 'current_balance', 'coach_notes'];
     protected $casts = ['target_amount' => 'decimal:2', 'current_balance' => 'decimal:2'];
 
     public function member(): BelongsTo

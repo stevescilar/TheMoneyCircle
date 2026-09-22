@@ -7,7 +7,9 @@ use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\DebtController;
 use App\Http\Controllers\Api\EmergencyFundController;
 use App\Http\Controllers\Api\InvestmentController;
+use App\Http\Controllers\Api\CommunityController;
 use App\Http\Controllers\Api\MonthlyReflectionController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\SavingsGoalController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,4 +65,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/monthly-reflections', [MonthlyReflectionController::class, 'index']);
     Route::post('/monthly-reflections', [MonthlyReflectionController::class, 'store']);
     Route::put('/monthly-reflections/{monthlyReflection}', [MonthlyReflectionController::class, 'update']);
+
+    Route::get('/community/announcements', [CommunityController::class, 'announcements']);
+    Route::get('/community/live-sessions', [CommunityController::class, 'liveSessions']);
+    Route::get('/community/resources', [CommunityController::class, 'resources']);
+    Route::get('/community/wins', [CommunityController::class, 'wins']);
+    Route::post('/community/wins', [CommunityController::class, 'storeWin']);
+    Route::post('/community/wins/{id}/cheer', [CommunityController::class, 'cheerWin']);
+    Route::get('/community/questions', [CommunityController::class, 'questions']);
+    Route::post('/community/questions', [CommunityController::class, 'storeQuestion']);
+    Route::get('/community/questions/{id}', [CommunityController::class, 'questionDetails']);
+    Route::post('/community/questions/{id}/answers', [CommunityController::class, 'storeAnswer']);
+    Route::post('/community/answers/{id}/upvote', [CommunityController::class, 'upvoteAnswer']);
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'markRead']);
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead']);
 });

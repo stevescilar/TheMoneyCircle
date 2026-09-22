@@ -12,7 +12,7 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'planned_amount', 'type', 'period_start', 'period_end',
+        'name', 'planned_amount', 'type', 'period_start', 'period_end', 'coach_notes',
     ];
 
     protected $casts = [
