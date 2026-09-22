@@ -15,14 +15,30 @@ class Member extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = ['coach_id', 'name', 'email', 'phone', 'join_date', 'status', 'password'];
+    protected $fillable = [
+        'coach_id',
+        'name',
+        'email',
+        'phone',
+        'join_date',
+        'status',
+        'password',
+        'email_verified_at',
+        'verification_code',
+    ];
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'verification_code'];
 
     protected $casts = [
         'join_date' => 'date',
         'password' => 'hashed',
+        'email_verified_at' => 'datetime',
     ];
+
+    public function isEmailVerified(): bool
+    {
+        return !empty($this->email_verified_at) || ($this->status === 'active' && empty($this->verification_code));
+    }
 
     public function coach(): BelongsTo
     {
@@ -59,8 +75,7 @@ class Member extends Authenticatable
         if($this->totalBudgeted() == 0){
             return 0;
         }
-        return round (($this->totalSpent() / $this->totalBudgeted()) * 100, 1);
-
+        return ($this->totalSpent() / $this->totalBudgeted()) * 100;
     }
 
     public function isOverSpent(): bool
@@ -68,11 +83,26 @@ class Member extends Authenticatable
         return $this->totalSpent() > $this->totalBudgeted();
     }
     
+    public function totalIncome(): float
+    {
+        return (float) $this->transactions()->where('type', 'income')->sum('amount');
+    }
+
+    public function netCashflow(): float
+    {
+        return $this->totalIncome() - $this->totalSpent();
+    }
+
     public function scopeWithBudgetTotals(Builder $query): Builder
     {
         return $query
             ->withSum('categories as total_budgeted', 'planned_amount')
-            ->withSum(['transactions as total_spent' => fn ($q) => $q->where('type', 'expense')], 'amount');
+            ->withSum(['transactions as total_spent' => function ($q) {
+                $q->where('type', 'expense');
+            }], 'amount')
+            ->withSum(['transactions as total_income' => function ($q) {
+                $q->where('type', 'income');
+            }], 'amount');
     }
 
     public function scopeAtRisk(Builder $query): Builder

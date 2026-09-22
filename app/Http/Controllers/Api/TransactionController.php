@@ -9,11 +9,15 @@ class TransactionController extends Controller
 {
     public function index(Request $request)
     {
-        $transactions = $request->user()
+        $query = $request->user()
             ->transactions()
-            ->with('category:id,name,type')
-            ->orderByDesc('transacted_at')
-            ->paginate(20);
+            ->with('category:id,name,type');
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->query('type'));
+        }
+
+        $transactions = $query->orderByDesc('transacted_at')->paginate(20);
 
         return response()->json($transactions);
     }
