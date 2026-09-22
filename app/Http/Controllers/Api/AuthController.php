@@ -10,6 +10,33 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:members,email',
+            'password' => 'required|string|min:6',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $coach = \App\Models\User::first();
+
+        $member = Member::create([
+            'coach_id' => $coach?->id ?? 1,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'join_date' => now()->toDateString(),
+            'status' => 'active',
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return response()->json([
+            'token' => $member->createToken('flutter-app')->plainTextToken,
+            'member' => $member,
+        ], 201);
+    }
+
     public function login(Request $request)
     {
         $request->validate([

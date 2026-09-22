@@ -64,3 +64,37 @@ it('logs out member and revokes token', function () {
     expect($member->tokens()->count())->toBe(0);
 });
 
+it('registers a new member and returns token and member info', function () {
+    $coach = User::factory()->create();
+
+    $response = $this->postJson('/api/register', [
+        'name' => 'Alice Member',
+        'email' => 'alice@example.com',
+        'password' => 'secret123',
+        'phone' => '+254700000000',
+    ]);
+
+    $response->assertCreated()
+        ->assertJsonStructure(['token', 'member'])
+        ->assertJsonPath('member.name', 'Alice Member')
+        ->assertJsonPath('member.email', 'alice@example.com');
+
+    expect(Member::where('email', 'alice@example.com')->exists())->toBeTrue();
+});
+
+it('fails registration with duplicate email', function () {
+    $coach = User::factory()->create();
+    Member::factory()->for($coach, 'coach')->create([
+        'email' => 'existing@example.com',
+    ]);
+
+    $response = $this->postJson('/api/register', [
+        'name' => 'Duplicate User',
+        'email' => 'existing@example.com',
+        'password' => 'secret123',
+    ]);
+
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors(['email']);
+});
+
