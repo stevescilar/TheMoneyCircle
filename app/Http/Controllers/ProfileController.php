@@ -16,8 +16,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+        $stats = [
+            'total_members' => $user->members()->count(),
+            'joined_date' => $user->created_at ? $user->created_at->format('F Y') : 'Active Coach',
+        ];
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'stats' => $stats,
         ]);
     }
 

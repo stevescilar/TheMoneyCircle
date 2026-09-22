@@ -217,64 +217,248 @@
                 </div>
 
                 <!-- Monthly Reflections & Coach Feedback History -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
-                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-5">
+                    @php
+                        $unreviewedReflections = $reflections->filter(fn($r) => empty(trim($r->coach_notes ?? '')))->count();
+                        $avgScore = $reflections->isNotEmpty() ? round($reflections->avg('financial_score'), 1) : null;
+                        $chronoReflections = $reflections->sortBy('period_month');
+                    @endphp
+
+                    <!-- Section Header -->
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-3 border-b border-gray-100 gap-3">
                         <div>
-                            <h3 class="font-extrabold text-lg text-gray-900">Monthly Reflections</h3>
-                            <p class="text-xs text-gray-500">Member self-assessments and coach guidance history</p>
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-extrabold text-lg text-gray-900">Monthly Reflections</h3>
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-brand-green/10 text-brand-green">
+                                    {{ count($reflections) }} Logged
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-0.5">Member self-assessments, financial confidence trajectory & coach action workbench</p>
                         </div>
-                        <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-brand-gold/20 text-brand-gold-dark">
-                            {{ count($reflections) }} Submitted
-                        </span>
+
+                        <div class="flex items-center gap-2">
+                            @if ($unreviewedReflections > 0)
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-xs font-extrabold">
+                                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                                    {{ $unreviewedReflections }} Awaiting Review
+                                </span>
+                            @elseif ($reflections->isNotEmpty())
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold">
+                                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    All Feedback Dispatched
+                                </span>
+                            @endif
+                        </div>
                     </div>
 
+                    @if ($reflections->isNotEmpty())
+                        <!-- Score Evolution Ribbon -->
+                        <div class="p-3.5 rounded-xl bg-gradient-to-r from-gray-50 via-emerald-50/20 to-gray-50 border border-gray-200/70 space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="font-extrabold text-gray-700 flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                    </svg>
+                                    Score Evolution Trajectory
+                                </span>
+                                @if ($avgScore !== null)
+                                    <span class="text-gray-500">
+                                        Avg Confidence: <strong class="text-brand-green font-extrabold">{{ $avgScore }} / 10</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+                                @foreach ($chronoReflections as $idx => $r)
+                                    @php
+                                        $s = $r->financial_score;
+                                        $pillBg = $s >= 8 ? 'bg-emerald-100 text-emerald-900 border-emerald-300' : ($s >= 5 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-red-100 text-red-900 border-red-300');
+                                    @endphp
+                                    <div class="flex items-center gap-1.5 shrink-0 px-2.5 py-1 rounded-lg border {{ $pillBg }} font-bold">
+                                        <span>{{ $r->period_month->format('M Y') }}</span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                                        <span class="font-black">{{ $s }}/10</span>
+                                    </div>
+                                    @if (!$loop->last)
+                                        <svg class="w-3.5 h-3.5 text-gray-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Reflections List -->
                     <div class="space-y-4">
                         @forelse ($reflections as $reflection)
-                            <div class="p-4 rounded-xl border border-gray-100 bg-gray-50/60 space-y-3">
+                            @php
+                                $hasNotes = !empty(trim($reflection->coach_notes ?? ''));
+                                $score = $reflection->financial_score;
+                                $scoreBadgeColor = $score >= 8 ? 'bg-emerald-600 text-white' : ($score >= 5 ? 'bg-amber-500 text-white' : 'bg-red-500 text-white');
+                                $scoreLabel = $score >= 8 ? 'High Confidence' : ($score >= 5 ? 'Steady' : 'Under Pressure');
+                            @endphp
+
+                            <div class="rounded-xl border {{ $hasNotes ? 'border-gray-200 bg-white' : 'border-amber-300/80 bg-amber-50/20' }} shadow-xs overflow-hidden transition-all">
                                 
-                                <div class="flex items-center justify-between">
-                                    <span class="font-extrabold text-sm text-gray-900">
-                                        {{ $reflection->period_month->format('F Y') }}
-                                    </span>
-                                    <span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-brand-green text-white shadow-sm">
-                                        Score: {{ $reflection->financial_score }}/10
-                                    </span>
+                                <!-- Card Header -->
+                                <div class="p-4 bg-gray-50/80 border-b border-gray-100 flex flex-wrap items-center justify-between gap-2">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-brand-green text-white flex flex-col items-center justify-center shadow-xs">
+                                            <span class="text-[10px] font-black uppercase tracking-wider">{{ $reflection->period_month->format('M') }}</span>
+                                            <span class="text-[9px] font-bold text-brand-gold">{{ $reflection->period_month->format('y') }}</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-black text-sm text-gray-900 leading-tight">
+                                                {{ $reflection->period_month->format('F Y') }} Reflection
+                                            </h4>
+                                            <p class="text-[11px] text-gray-500">
+                                                {{ $reflection->created_at ? 'Submitted ' . $reflection->created_at->format('d M Y • h:i A') : 'Self-assessment' }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <!-- Score Pill -->
+                                        <span class="px-2.5 py-1 text-xs font-extrabold rounded-full {{ $scoreBadgeColor }} shadow-xs flex items-center gap-1">
+                                            <span>★</span> {{ $reflection->financial_score }}/10
+                                            <span class="text-[10px] font-medium opacity-90">• {{ $scoreLabel }}</span>
+                                        </span>
+
+                                        <!-- Review Status Pill -->
+                                        @if ($hasNotes)
+                                            <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                Feedback Given
+                                            </span>
+                                        @else
+                                            <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-200 animate-pulse flex items-center gap-1">
+                                                <span>⚠️</span> Needs Review
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
 
-                                @if ($reflection->wins)
-                                    <div class="text-xs text-gray-700 bg-emerald-50/80 p-2.5 rounded-lg border border-emerald-100">
-                                        <strong class="text-emerald-900">🎉 Member Wins:</strong> {{ $reflection->wins }}
-                                    </div>
-                                @endif
+                                <!-- Card Body: Split Grid -->
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    
+                                    <!-- Left: Member Self-Report -->
+                                    <div class="space-y-3">
+                                        <div class="text-[11px] font-extrabold uppercase tracking-wider text-gray-400">
+                                            Member Self-Assessment
+                                        </div>
 
-                                @if ($reflection->challenges)
-                                    <div class="text-xs text-gray-700 bg-red-50/80 p-2.5 rounded-lg border border-red-100">
-                                        <strong class="text-red-900">⚠️ Challenges:</strong> {{ $reflection->challenges }}
-                                    </div>
-                                @endif
+                                        <!-- Wins -->
+                                        <div class="p-3 rounded-lg bg-emerald-50/70 border border-emerald-100 space-y-1">
+                                            <div class="flex items-center gap-1.5 text-xs font-extrabold text-emerald-900">
+                                                <span>🎉</span> Wins & Accomplishments
+                                            </div>
+                                            <p class="text-xs text-gray-700 leading-relaxed">
+                                                {{ $reflection->wins ?: 'No wins highlighted for this month.' }}
+                                            </p>
+                                        </div>
 
-                                <!-- Coach Feedback Form -->
-                                <form method="POST" action="{{ route('members.reflections.notes', [$member, $reflection]) }}" class="space-y-2 pt-2 border-t border-gray-200/60">
-                                    @csrf
-                                    @method('PATCH')
-                                    <label class="block text-xs font-bold text-gray-700">Coach Feedback & Action Items</label>
-                                    <textarea name="coach_notes" 
-                                              rows="2" 
-                                              placeholder="Provide coaching advice, action steps, or congratulations..." 
-                                              class="w-full text-xs bg-white border border-gray-200 rounded-lg p-2.5 focus:ring-1 focus:ring-brand-green focus:border-brand-green">{{ $reflection->coach_notes }}</textarea>
-                                    <div class="flex justify-end">
-                                        <button type="submit" class="px-3.5 py-1.5 bg-brand-green text-white text-xs font-bold rounded-lg hover:bg-brand-green-light transition-colors shadow-sm">
-                                            Save Reflection Notes
-                                        </button>
+                                        <!-- Challenges -->
+                                        <div class="p-3 rounded-lg bg-amber-50/70 border border-amber-100 space-y-1">
+                                            <div class="flex items-center gap-1.5 text-xs font-extrabold text-amber-900">
+                                                <span>⚠️</span> Challenges & Roadblocks
+                                            </div>
+                                            <p class="text-xs text-gray-700 leading-relaxed">
+                                                {{ $reflection->challenges ?: 'No challenges reported for this month.' }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </form>
+
+                                    <!-- Right: Coach Feedback Composer -->
+                                    <div class="space-y-3 flex flex-col justify-between">
+                                        <div class="text-[11px] font-extrabold uppercase tracking-wider text-brand-green flex items-center justify-between">
+                                            <span>Coach Steve Advice & Action Items</span>
+                                            <span class="text-[10px] text-gray-400 font-normal">Push notification enabled</span>
+                                        </div>
+
+                                        <form method="POST" action="{{ route('members.reflections.notes', [$member, $reflection]) }}" class="space-y-2.5 flex-1 flex flex-col justify-between">
+                                            @csrf
+                                            @method('PATCH')
+
+                                            <!-- Preset Helper Chips -->
+                                            <div class="flex flex-wrap gap-1 text-[11px]">
+                                                <button type="button" 
+                                                        onclick="appendReflectionNote(this, 'ref_note_{{ $reflection->id }}')" 
+                                                        data-text="Outstanding discipline this month! Keep this momentum going."
+                                                        class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-semibold transition-colors">
+                                                    + Great discipline!
+                                                </button>
+                                                <button type="button" 
+                                                        onclick="appendReflectionNote(this, 'ref_note_{{ $reflection->id }}')" 
+                                                        data-text="Let us focus on accelerating the smallest debt payoff this month."
+                                                        class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-semibold transition-colors">
+                                                    + Debt focus
+                                                </button>
+                                                <button type="button" 
+                                                        onclick="appendReflectionNote(this, 'ref_note_{{ $reflection->id }}')" 
+                                                        data-text="Prioritize building that 1-month cash buffer to cushion unexpected spikes."
+                                                        class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-semibold transition-colors">
+                                                    + Buffer focus
+                                                </button>
+                                            </div>
+
+                                            <textarea id="ref_note_{{ $reflection->id }}"
+                                                      name="coach_notes" 
+                                                      rows="3" 
+                                                      placeholder="Provide personalized encouragement, course-correction, or action items for {{ $member->first_name ?? 'this member' }}..." 
+                                                      class="w-full text-xs bg-white border border-gray-200 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-green focus:border-brand-green transition-all">{{ $reflection->coach_notes }}</textarea>
+
+                                            <div class="flex items-center justify-between pt-1">
+                                                <span class="text-[10px] text-gray-400 italic">
+                                                    Dispatched to Member 360 & Coach Messages
+                                                </span>
+                                                <button type="submit" class="px-3.5 py-1.5 bg-brand-green text-white text-xs font-extrabold rounded-lg hover:bg-brand-green-light transition-colors shadow-xs flex items-center gap-1.5">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                                    </svg>
+                                                    Save & Send Advice
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
 
                             </div>
                         @empty
-                            <p class="text-gray-400 text-sm italic py-4">No monthly reflections submitted yet.</p>
+                            <div class="p-8 text-center bg-gray-50/60 rounded-xl border border-dashed border-gray-200">
+                                <div class="w-12 h-12 rounded-full bg-brand-green/10 text-brand-green flex items-center justify-center mx-auto mb-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                </div>
+                                <h4 class="text-sm font-bold text-gray-700">No Monthly Reflections Yet</h4>
+                                <p class="text-xs text-gray-400 max-w-sm mx-auto mt-1">
+                                    When {{ $member->first_name ?? 'the member' }} submits monthly check-ins on their app, they will appear here for your review and coaching.
+                                </p>
+                            </div>
                         @endforelse
                     </div>
                 </div>
+
+                <script>
+                    function appendReflectionNote(btn, textareaId) {
+                        const textarea = document.getElementById(textareaId);
+                        if (!textarea) return;
+                        const text = btn.getAttribute('data-text');
+                        if (!text) return;
+                        if (textarea.value.trim().length === 0) {
+                            textarea.value = text;
+                        } else {
+                            textarea.value = textarea.value.trim() + ' ' + text;
+                        }
+                        textarea.focus();
+                    }
+                </script>
 
             </div>
 

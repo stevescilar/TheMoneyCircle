@@ -10,8 +10,19 @@ class MonthlyReflection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['member_id', 'financial_score', 'wins', 'challenges', 'coach_notes', 'period_month'];
-    protected $casts = ['period_month' => 'date'];
+    protected $fillable = [
+        'member_id',
+        'period_month',
+        'financial_score',
+        'wins',
+        'challenges',
+        'coach_notes',
+    ];
+
+    protected $casts = [
+        'period_month' => 'date',
+        'financial_score' => 'integer',
+    ];
 
     public function member(): BelongsTo
     {

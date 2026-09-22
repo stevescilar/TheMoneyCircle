@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Member;
 
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'role', 'password', 'phone', 'title', 'bio', 'specialties', 'email_verified_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -33,9 +33,13 @@ class User extends Authenticatable
         ];
     }
 
+    public function isSuperAdmin(): bool
+    {
+        return in_array($this->role, ['super_admin', 'admin']);
+    }
+
     public function members(): HasMany
     {
         return $this->hasMany(Member::class, 'coach_id');
     }
-    
 }

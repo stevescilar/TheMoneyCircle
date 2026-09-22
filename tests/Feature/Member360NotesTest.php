@@ -109,3 +109,63 @@ it('prevents another coach from modifying member debt notes', function () {
     expect($debt->fresh()->coach_notes)->toBeNull();
 });
 
+it('allows coach to submit advice on a monthly reflection and creates notification', function () {
+    $coach = User::factory()->create();
+    $member = Member::factory()->for($coach, 'coach')->create();
+
+    $reflection = MonthlyReflection::create([
+        'member_id' => $member->id,
+        'period_month' => now()->startOfMonth(),
+        'financial_score' => 8,
+        'wins' => 'Stayed under budget and paid extra debt',
+        'challenges' => 'Car service was high',
+    ]);
+
+    $note = 'Outstanding discipline this month! Let us automate this habit.';
+
+    $response = $this->actingAs($coach)->patch(route('members.reflections.notes', [$member, $reflection]), [
+        'coach_notes' => $note,
+    ]);
+
+    $response->assertRedirect();
+    expect($reflection->fresh()->coach_notes)->toBe($note);
+
+    $this->assertDatabaseHas('member_notifications', [
+        'member_id' => $member->id,
+        'type' => 'reflection_note',
+        'action_target' => 'reflections',
+    ]);
+});
+
+it('renders monthly reflections and score evolution trajectory on member 360 profile', function () {
+    $coach = User::factory()->create();
+    $member = Member::factory()->for($coach, 'coach')->create();
+
+    MonthlyReflection::create([
+        'member_id' => $member->id,
+        'period_month' => now()->subMonth()->startOfMonth(),
+        'financial_score' => 6,
+        'wins' => 'Built emergency buffer',
+        'challenges' => 'High electricity bill',
+        'coach_notes' => 'Great start on savings',
+    ]);
+
+    MonthlyReflection::create([
+        'member_id' => $member->id,
+        'period_month' => now()->startOfMonth(),
+        'financial_score' => 8,
+        'wins' => 'Cleared card debt',
+        'challenges' => 'None',
+        'coach_notes' => null,
+    ]);
+
+    $response = $this->actingAs($coach)->get(route('members.show', $member));
+
+    $response->assertOk();
+    $response->assertSee('Monthly Reflections');
+    $response->assertSee('Score Evolution Trajectory');
+    $response->assertSee('Needs Review');
+    $response->assertSee('Feedback Given');
+});
+
+

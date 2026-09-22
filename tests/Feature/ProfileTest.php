@@ -83,3 +83,41 @@ test('correct password must be provided to delete account', function () {
 
     $this->assertNotNull($user->fresh());
 });
+
+test('coach profile fields including title, phone, bio, and specialties can be updated', function () {
+    $coach = User::factory()->create([
+        'name' => 'Coach Steve',
+        'email' => 'steve@themoneycircle.com',
+    ]);
+
+    $response = $this
+        ->actingAs($coach)
+        ->patch('/profile', [
+            'name' => 'Coach Steve Mwangi',
+            'email' => 'steve@themoneycircle.com',
+            'title' => 'Lead Wealth & Debt Elimination Coach',
+            'phone' => '+254712345678',
+            'bio' => 'Empowering members to eliminate toxic debt and achieve financial peace.',
+            'specialties' => 'Debt Snowball, High-Yield MMFs, Real Estate Planning',
+        ]);
+
+    $response
+        ->assertSessionHasNoErrors()
+        ->assertRedirect('/profile');
+
+    $coach->refresh();
+
+    expect($coach->name)->toBe('Coach Steve Mwangi')
+        ->and($coach->title)->toBe('Lead Wealth & Debt Elimination Coach')
+        ->and($coach->phone)->toBe('+254712345678')
+        ->and($coach->bio)->toBe('Empowering members to eliminate toxic debt and achieve financial peace.')
+        ->and($coach->specialties)->toBe('Debt Snowball, High-Yield MMFs, Real Estate Planning');
+
+    $viewResponse = $this->actingAs($coach)->get('/profile');
+    $viewResponse->assertOk();
+    $viewResponse->assertSee('Coach Steve Mwangi');
+    $viewResponse->assertSee('Lead Wealth & Debt Elimination Coach');
+    $viewResponse->assertSee('+254712345678');
+    $viewResponse->assertSee('VERIFIED COACH');
+});
+

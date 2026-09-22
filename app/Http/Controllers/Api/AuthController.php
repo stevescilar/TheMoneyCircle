@@ -45,7 +45,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $member->createToken('flutter-app')->plainTextToken,
-            'member' => $member,
+            'member' => $this->formatMemberResponse($member),
             'requires_verification' => true,
             'message' => 'Registration successful. A 6-digit verification code has been sent to your email.',
         ], 201);
@@ -70,7 +70,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $member->createToken('flutter-app')->plainTextToken,
-            'member' => $member,
+            'member' => $this->formatMemberResponse($member),
             'requires_verification' => $requiresVerification,
         ]);
     }
@@ -104,7 +104,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Account activated successfully!',
-            'member' => $member->fresh(),
+            'member' => $this->formatMemberResponse($member->fresh()),
         ]);
     }
 
@@ -134,9 +134,26 @@ class AuthController extends Controller
         ]);
     }
 
+    protected function formatMemberResponse(Member $member): array
+    {
+        $coach = $member->coach ?? \App\Models\User::first();
+        $data = $member->toArray();
+        $data['coach'] = $coach ? [
+            'id' => $coach->id,
+            'name' => $coach->name,
+            'email' => $coach->email,
+            'phone' => $coach->phone,
+            'title' => $coach->title,
+            'bio' => $coach->bio,
+            'specialties' => $coach->specialties,
+        ] : null;
+
+        return $data;
+    }
+
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json($this->formatMemberResponse($request->user()));
     }
 
     public function updateProfile(Request $request)
@@ -152,7 +169,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Profile updated successfully',
-            'member' => $member->fresh(),
+            'member' => $this->formatMemberResponse($member->fresh()),
         ]);
     }
 

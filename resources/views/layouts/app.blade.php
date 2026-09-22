@@ -131,6 +131,17 @@
                                 <span>Pending Reviews</span>
                             </div>
                         </a>
+
+                        <a href="{{ route('profile.edit') }}" 
+                           class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('profile.*') ? 'bg-brand-gold text-brand-green-dark shadow-md shadow-brand-gold/10' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 {{ request()->routeIs('profile.*') ? 'text-brand-green-dark' : 'text-amber-300' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                <span>Coach Profile & Bio</span>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('profile.*') ? 'bg-brand-green-dark/20 text-brand-green-dark' : 'bg-white/10 text-emerald-300' }}">Account</span>
+                        </a>
                     </nav>
                 </div>
 
@@ -141,55 +152,60 @@
                         <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-brand-gold/20 text-brand-gold">App Sync</span>
                     </div>
                     <nav class="space-y-1">
-                        <div class="flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium text-white/50 hover:bg-white/5 cursor-not-allowed">
+                        <a href="{{ route('coach.announcements.index') }}" 
+                           class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('coach.announcements.*') ? 'bg-brand-gold text-brand-green-dark shadow-md shadow-brand-gold/10' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                             <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 {{ request()->routeIs('coach.announcements.*') ? 'text-brand-green-dark' : 'text-emerald-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
                                 </svg>
                                 <span>Announcements</span>
                             </div>
-                            <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded font-mono text-emerald-200">Phase 2</span>
-                        </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('coach.announcements.*') ? 'bg-brand-green-dark/20 text-brand-green-dark' : 'bg-white/10 text-emerald-300' }}">Live</span>
+                        </a>
 
-                        <div class="flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium text-white/50 hover:bg-white/5 cursor-not-allowed">
+                        <a href="{{ route('coach.live-sessions.index') }}" 
+                           class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('coach.live-sessions.*') ? 'bg-brand-gold text-brand-green-dark shadow-md shadow-brand-gold/10' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                             <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 {{ request()->routeIs('coach.live-sessions.*') ? 'text-brand-green-dark' : 'text-emerald-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                 </svg>
                                 <span>Live Sessions</span>
                             </div>
-                            <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded font-mono text-emerald-200">Phase 2</span>
-                        </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('coach.live-sessions.*') ? 'bg-brand-green-dark/20 text-brand-green-dark' : 'bg-white/10 text-emerald-300' }}">Live</span>
+                        </a>
 
-                        <div class="flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium text-white/50 hover:bg-white/5 cursor-not-allowed">
+                        <a href="{{ route('coach.resources.index') }}" 
+                           class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('coach.resources.*') ? 'bg-brand-gold text-brand-green-dark shadow-md shadow-brand-gold/10' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                             <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 {{ request()->routeIs('coach.resources.*') ? 'text-brand-green-dark' : 'text-emerald-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                                 </svg>
                                 <span>Resource Library</span>
                             </div>
-                            <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded font-mono text-emerald-200">Phase 2</span>
-                        </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('coach.resources.*') ? 'bg-brand-green-dark/20 text-brand-green-dark' : 'bg-white/10 text-emerald-300' }}">Live</span>
+                        </a>
 
-                        <div class="flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium text-white/50 hover:bg-white/5 cursor-not-allowed">
+                        <a href="{{ route('coach.questions.index') }}" 
+                           class="flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('coach.questions.*') ? 'bg-brand-gold text-brand-green-dark font-bold shadow-md shadow-brand-gold/20' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                             <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 {{ request()->routeIs('coach.questions.*') ? 'text-brand-green-dark' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                                 <span>Coach Q&A Desk</span>
                             </div>
-                            <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded font-mono text-amber-200">Phase 3</span>
-                        </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('coach.questions.*') ? 'bg-brand-green-dark/20 text-brand-green-dark' : 'bg-amber-400/20 text-amber-300' }}">Q&A</span>
+                        </a>
 
-                        <div class="flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium text-white/50 hover:bg-white/5 cursor-not-allowed">
+                        <a href="{{ route('coach.wins.index') }}" 
+                           class="flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('coach.wins.*') ? 'bg-brand-gold text-brand-green-dark font-bold shadow-md shadow-brand-gold/20' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                             <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 {{ request()->routeIs('coach.wins.*') ? 'text-brand-green-dark' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
                                 </svg>
                                 <span>Wins Wall</span>
                             </div>
-                            <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded font-mono text-amber-200">Phase 3</span>
-                        </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('coach.wins.*') ? 'bg-brand-green-dark/20 text-brand-green-dark' : 'bg-emerald-400/20 text-emerald-300' }}">Wins</span>
+                        </a>
                     </nav>
                 </div>
 
@@ -198,15 +214,20 @@
             <!-- Coach Profile Footer -->
             <div class="p-4 border-t border-white/10 bg-black/20">
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-brand-green-light border-2 border-brand-gold flex items-center justify-center font-bold text-white shadow-inner">
+                    <a href="{{ route('profile.edit') }}" title="Manage Coach Profile" class="flex items-center gap-3 group flex-1 mr-2 p-1 rounded-xl hover:bg-white/10 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-brand-green-light border-2 border-brand-gold flex items-center justify-center font-bold text-white shadow-inner group-hover:scale-105 transition-transform">
                             {{ strtoupper(substr(Auth::user()->name ?? 'C', 0, 2)) }}
                         </div>
                         <div class="overflow-hidden">
-                            <p class="text-sm font-semibold text-white truncate">{{ Auth::user()->name ?? 'Coach Steve' }}</p>
+                            <div class="flex items-center gap-1.5">
+                                <p class="text-sm font-semibold text-white truncate group-hover:text-brand-gold transition-colors">{{ Auth::user()->name ?? 'Coach Steve' }}</p>
+                                @if(Auth::user()?->isSuperAdmin())
+                                    <span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-black uppercase bg-brand-gold text-brand-green-dark">Admin</span>
+                                @endif
+                            </div>
                             <p class="text-xs text-emerald-300/70 truncate">{{ Auth::user()->email ?? 'coach@themoneycircle.com' }}</p>
                         </div>
-                    </div>
+                    </a>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -248,6 +269,13 @@
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span>{{ now()->format('l, j F Y') }}</span>
                     </div>
+
+                    <a href="{{ route('profile.edit') }}" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-1.5 shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span>Profile & Bio</span>
+                    </a>
 
                     <a href="{{ route('coach.dashboard') }}" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-brand-green text-white hover:bg-brand-green-light transition-colors shadow-sm">
                         Refresh
