@@ -1,12 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <h2 class="font-extrabold text-2xl text-brand-green leading-tight">
-                Coach Command Center
-            </h2>
-            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-brand-green/10 text-brand-green">
-                Live Overview
-            </span>
+        <div class="flex items-center gap-3.5">
+            <img src="{{ asset('images/logo.png') }}" alt="The Money Circle" class="w-10 h-10 rounded-xl object-contain shadow-sm" />
+            <div>
+                <div class="flex items-center gap-2.5">
+                    <h2 class="font-extrabold text-2xl text-brand-green leading-tight">
+                        Coach Command Center
+                    </h2>
+                    <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-brand-green/10 text-brand-green">
+                        Live Overview
+                    </span>
+                </div>
+            </div>
         </div>
     </x-slot>
 
