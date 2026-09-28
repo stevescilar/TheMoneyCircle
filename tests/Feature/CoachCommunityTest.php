@@ -103,7 +103,7 @@ it('allows coach to view live sessions and schedule a new session', function () 
     $payload = [
         'title' => 'Advanced Wealth Building in MMFs',
         'description' => 'Comparing yields and inflation resistance.',
-        'speaker_name' => 'Coach Steve',
+        'speaker_name' => 'Expert Coach',
         'session_time' => $sessionTime->format('Y-m-d H:i:s'),
         'duration_minutes' => 60,
         'meeting_url' => 'https://meet.google.com/test-session',
@@ -114,7 +114,7 @@ it('allows coach to view live sessions and schedule a new session', function () 
 
     $this->assertDatabaseHas('live_sessions', [
         'title' => 'Advanced Wealth Building in MMFs',
-        'speaker_name' => 'Coach Steve',
+        'speaker_name' => 'Expert Coach',
         'meeting_url' => 'https://meet.google.com/test-session',
     ]);
 
@@ -132,7 +132,7 @@ it('allows coach to cancel and delete a live session', function () {
     $session = LiveSession::create([
         'coach_id' => $coach->id,
         'title' => 'Session to Cancel',
-        'speaker_name' => 'Coach Steve',
+        'speaker_name' => 'Expert Coach',
         'session_time' => now()->addDays(4),
         'duration_minutes' => 45,
     ]);

@@ -38,7 +38,7 @@
                         if (str_starts_with($cleanPhone, '0')) {
                             $cleanPhone = '254' . substr($cleanPhone, 1);
                         }
-                        $waText = urlencode("Hi {$member->name}, Coach Steve here from The Money Circle. I was just reviewing your financial plan and wanted to check in...");
+                        $waText = urlencode("Hi {$member->name}, your Coach here from The Money Circle. I was just reviewing your financial plan and wanted to check in...");
                     @endphp
                     <a href="https://wa.me/{{ $cleanPhone }}?text={{ $waText }}" 
                        target="_blank" 
@@ -376,7 +376,7 @@
                                     <!-- Right: Coach Feedback Composer -->
                                     <div class="space-y-3 flex flex-col justify-between">
                                         <div class="text-[11px] font-extrabold uppercase tracking-wider text-brand-green flex items-center justify-between">
-                                            <span>Coach Steve Advice & Action Items</span>
+                                            <span>Expert Coach Advice & Action Items</span>
                                             <span class="text-[10px] text-gray-400 font-normal">Push notification enabled</span>
                                         </div>
 

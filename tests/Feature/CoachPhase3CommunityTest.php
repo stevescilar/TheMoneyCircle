@@ -7,7 +7,7 @@ use App\Models\Member;
 use App\Models\User;
 
 it('allows coach to view Q&A Desk index with questions and metrics', function () {
-    $coach = User::factory()->create(['name' => 'Coach Steve']);
+    $coach = User::factory()->create(['name' => 'Expert Coach']);
 
     $q1 = CommunityQuestion::create([
         'author_name' => 'Dennis K.',
@@ -60,7 +60,7 @@ it('allows coach to filter questions by category and status', function () {
 });
 
 it('allows coach to view question discussion thread', function () {
-    $coach = User::factory()->create(['name' => 'Coach Steve']);
+    $coach = User::factory()->create(['name' => 'Expert Coach']);
 
     $q = CommunityQuestion::create([
         'author_name' => 'Mercy A.',
@@ -87,7 +87,7 @@ it('allows coach to view question discussion thread', function () {
 });
 
 it('allows coach to post an official verified answer and badges correctly in API', function () {
-    $coach = User::factory()->create(['name' => 'Coach Steve']);
+    $coach = User::factory()->create(['name' => 'Expert Coach']);
 
     $q = CommunityQuestion::create([
         'author_name' => 'Faith W.',
@@ -106,7 +106,7 @@ it('allows coach to post an official verified answer and badges correctly in API
     $response->assertRedirect();
     $this->assertDatabaseHas('community_answers', [
         'question_id' => $q->id,
-        'author_name' => 'Coach Steve',
+        'author_name' => 'Expert Coach',
         'author_role' => 'coach',
         'is_coach_verified' => true,
         'body' => $answerText,
@@ -116,7 +116,7 @@ it('allows coach to post an official verified answer and badges correctly in API
     $apiRes = $this->getJson("/api/community/questions/{$q->id}");
     $apiRes->assertOk();
     $apiRes->assertJsonFragment([
-        'author_name' => 'Coach Steve',
+        'author_name' => 'Expert Coach',
         'author_role' => 'coach',
         'is_coach_verified' => true,
     ]);

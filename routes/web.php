@@ -61,3 +61,25 @@ Route::middleware('auth')->group(function () {
 });
 require __DIR__.'/auth.php';
 
+
+// APK Download Routes
+Route::get("/downloads/TheMoneyCircle.apk", function () {
+    $path = public_path("downloads/TheMoneyCircle.apk");
+    if (!file_exists($path)) {
+        $path = public_path("downloads/the-money-circle.apk");
+    }
+    if (!file_exists($path)) {
+        abort(404, "The Money Circle Android APK package is currently being prepared. Please check back shortly.");
+    }
+    return response()->download($path, "TheMoneyCircle.apk", [
+        "Content-Type" => "application/vnd.android.package-archive",
+    ]);
+})->name("download.apk");
+
+Route::get("/downloads/the-money-circle.apk", function () {
+    return redirect()->route("download.apk");
+});
+
+Route::get("/download", function () {
+    return redirect("/#download");
+})->name("download.page");

@@ -77,7 +77,7 @@ class CommunityController extends Controller
                 'id' => 1,
                 'title' => 'Mastering Emergency Funds & High-Yield MMFs',
                 'description' => 'Learn how to strategically park 3-6 months of expenses, calculate realistic emergency targets, and compare interest yields among leading Money Market Funds.',
-                'speaker_name' => 'Coach Steve',
+                'speaker_name' => 'Expert Coach',
                 'session_time' => now()->addDays(2)->setTime(19, 0)->toIso8601String(),
                 'duration_minutes' => 60,
                 'meeting_url' => 'https://meet.google.com/tmc-live-session',
@@ -86,7 +86,7 @@ class CommunityController extends Controller
                 'id' => 2,
                 'title' => 'Debt Payoff Strategies: Snowball vs. Avalanche',
                 'description' => 'An interactive breakdown of psychological momentum vs mathematical interest savings. We will build sample repayment roadmaps live.',
-                'speaker_name' => 'Coach Steve & Guest Speaker',
+                'speaker_name' => 'Expert Coach & Guest Speaker',
                 'session_time' => now()->addDays(6)->setTime(18, 30)->toIso8601String(),
                 'duration_minutes' => 75,
                 'meeting_url' => 'https://meet.google.com/tmc-debt-strategy',
@@ -228,7 +228,7 @@ class CommunityController extends Controller
                 'member_name' => 'Brian O.',
                 'category' => 'emergency_fund',
                 'title' => 'Hit 3-Month Emergency Fund Cushion! 🛡️',
-                'story' => 'My target was Ksh 150,000 safely parked in a top MMF. Setting up an automated standing order on payday made it painless. Huge thanks to Coach Steve for the budgeting guidance!',
+                'story' => 'My target was Ksh 150,000 safely parked in a top MMF. Setting up an automated standing order on payday made it painless. Huge thanks to Expert Coach for the budgeting guidance!',
                 'amount_celebrated' => 150000.00,
                 'cheers_count' => 31,
                 'has_cheered' => true,
@@ -478,7 +478,7 @@ class CommunityController extends Controller
             1 => [
                 [
                     'id' => 101,
-                    'author_name' => 'Coach Steve 🎓',
+                    'author_name' => 'Expert Coach 🎓',
                     'author_role' => 'coach',
                     'is_coach_verified' => true,
                     'body' => "Great question Dennis! Let's do the exact math:\n16.2% gross on MMF minus 15% withholding tax = 13.77% net return. Your Sacco loan is costing you 14.0% p.a.\n\nFrom a purely mathematical standpoint, the loan payoff wins by ~0.23%. More importantly, paying off the debt gives you a GUARANTEED 14% tax-free return with ZERO volatility. I recommend wiping out the Sacco debt first, then redirecting that monthly installment straight into your MMF compounding machine!",
@@ -498,7 +498,7 @@ class CommunityController extends Controller
             2 => [
                 [
                     'id' => 201,
-                    'author_name' => 'Coach Steve 🎓',
+                    'author_name' => 'Expert Coach 🎓',
                     'author_role' => 'coach',
                     'is_coach_verified' => true,
                     'body' => "Hi Mercy! For variable freelance income, use the 'Buffer Account & Baseline Salary' method:\n1. Calculate your bare-minimum baseline living expenses (e.g. Ksh 45k).\n2. Deposit all client payments into a dedicated 'Holding/Buffer Account'.\n3. Pay yourself a fixed salary of Ksh 45k on the 1st of every month from that buffer.\n4. In bumper months (e.g. 120k), the surplus remains in the buffer to float lean months. Every quarter, review the excess and sweep 50% into investments and 50% into a bonus!",

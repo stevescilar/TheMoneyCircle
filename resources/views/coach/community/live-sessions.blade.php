@@ -235,7 +235,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 mb-1">Speaker Name *</label>
-                                <input type="text" name="speaker_name" required value="{{ Auth::user()->name ?? 'Coach Steve' }}"
+                                <input type="text" name="speaker_name" required value="{{ Auth::user()->name ?? 'Coach' }}"
                                        class="w-full text-xs border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-brand-green focus:border-brand-green">
                             </div>
 

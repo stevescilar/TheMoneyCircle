@@ -20,7 +20,7 @@ Route::get('/app/version', function () {
         'latest_version' => '1.0.1',
         'latest_build' => 2,
         'minimum_required_version' => '1.0.0',
-        'update_url' => 'https://microsilsystem.co.ke/downloads/tmc-app.apk',
+        'update_url' => 'https://moneycircle.microsilsystem.co.ke/downloads/TheMoneyCircle.apk',
         'release_notes' => "• Member income visibility and net cashflow tracking\n• Edit monthly reflections\n• Member profile management and password change\n• Secure email verification and account activation",
         'force_update' => false,
     ]);

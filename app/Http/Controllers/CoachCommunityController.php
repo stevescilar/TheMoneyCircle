@@ -259,7 +259,7 @@ class CoachCommunityController extends Controller
         CommunityAnswer::create([
             'question_id' => $question->id,
             'member_id' => null,
-            'author_name' => $coach?->name ?? 'Coach Steve',
+            'author_name' => $coach?->name ?? 'Coach',
             'author_role' => 'coach',
             'body' => $validated['body'],
             'is_coach_verified' => true,

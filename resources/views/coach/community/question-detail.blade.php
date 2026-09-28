@@ -134,7 +134,7 @@
 
                 <div class="flex items-center justify-between pt-1">
                     <div class="text-xs text-white/70">
-                        Posting as: <strong class="text-brand-gold">{{ Auth::user()->name ?? 'Coach Steve' }}</strong>
+                        Posting as: <strong class="text-brand-gold">{{ Auth::user()->name ?? 'Coach' }}</strong>
                     </div>
                     <button type="submit" 
                             class="px-5 py-2.5 bg-brand-gold text-brand-green-dark font-extrabold text-xs rounded-xl hover:bg-yellow-400 transition-all shadow-md flex items-center gap-2 cursor-pointer">

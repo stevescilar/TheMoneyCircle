@@ -86,15 +86,15 @@ test('correct password must be provided to delete account', function () {
 
 test('coach profile fields including title, phone, bio, and specialties can be updated', function () {
     $coach = User::factory()->create([
-        'name' => 'Coach Steve',
-        'email' => 'steve@themoneycircle.com',
+        'name' => 'Coach',
+        'email' => 'coach@themoneycircle.com',
     ]);
 
     $response = $this
         ->actingAs($coach)
         ->patch('/profile', [
-            'name' => 'Coach Steve Mwangi',
-            'email' => 'steve@themoneycircle.com',
+            'name' => 'Expert Coach',
+            'email' => 'coach@themoneycircle.com',
             'title' => 'Lead Wealth & Debt Elimination Coach',
             'phone' => '+254712345678',
             'bio' => 'Empowering members to eliminate toxic debt and achieve financial peace.',
@@ -107,7 +107,7 @@ test('coach profile fields including title, phone, bio, and specialties can be u
 
     $coach->refresh();
 
-    expect($coach->name)->toBe('Coach Steve Mwangi')
+    expect($coach->name)->toBe('Expert Coach')
         ->and($coach->title)->toBe('Lead Wealth & Debt Elimination Coach')
         ->and($coach->phone)->toBe('+254712345678')
         ->and($coach->bio)->toBe('Empowering members to eliminate toxic debt and achieve financial peace.')
@@ -115,7 +115,7 @@ test('coach profile fields including title, phone, bio, and specialties can be u
 
     $viewResponse = $this->actingAs($coach)->get('/profile');
     $viewResponse->assertOk();
-    $viewResponse->assertSee('Coach Steve Mwangi');
+    $viewResponse->assertSee('Expert Coach');
     $viewResponse->assertSee('Lead Wealth & Debt Elimination Coach');
     $viewResponse->assertSee('+254712345678');
     $viewResponse->assertSee('VERIFIED COACH');

@@ -216,7 +216,7 @@
                         </div>
                         <div class="overflow-hidden">
                             <div class="flex items-center gap-1.5">
-                                <p class="text-sm font-semibold text-white truncate group-hover:text-brand-gold transition-colors">{{ Auth::user()->name ?? 'Coach Steve' }}</p>
+                                <p class="text-sm font-semibold text-white truncate group-hover:text-brand-gold transition-colors">{{ Auth::user()->name ?? 'Coach' }}</p>
                                 @if(Auth::user()?->isSuperAdmin())
                                     <span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-black uppercase bg-brand-gold text-brand-green-dark">Admin</span>
                                 @endif
