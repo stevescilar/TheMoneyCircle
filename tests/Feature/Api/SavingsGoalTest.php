@@ -64,6 +64,39 @@ it('forbids contributing to another member\'s goal', function () {
     $this->postJson("/api/savings-goals/{$goal->id}/contribute", ['amount' => 100])->assertForbidden();
 });
 
+// --- update ---
+it('updates a savings goal', function () use ($shapeKeys) {
+    $goal = SavingsGoal::factory()->for($this->member)->create([
+        'goal_name'     => 'Old Goal',
+        'target_amount' => 50000,
+        'saved_amount'  => 10000,
+    ]);
+
+    $data = $this->putJson("/api/savings-goals/{$goal->id}", [
+        'goal_name'     => 'Updated Goal',
+        'target_amount' => 60000,
+        'saved_amount'  => 15000,
+    ])->assertOk()->json();
+
+    foreach ($shapeKeys as $key) {
+        expect($data)->toHaveKey($key);
+    }
+
+    expect($data['goal_name'])->toBe('Updated Goal')
+        ->and((float) $data['target_amount'])->toBe(60000.0)
+        ->and((float) $data['saved_amount'])->toBe(15000.0)
+        ->and((float) $data['remaining'])->toBe(45000.0)
+        ->and((float) $data['percent_complete'])->toBe(25.0);
+});
+
+it('forbids updating another member\'s savings goal', function () {
+    $goal = SavingsGoal::factory()->create();
+
+    $this->putJson("/api/savings-goals/{$goal->id}", [
+        'goal_name' => 'Hacked Goal',
+    ])->assertForbidden();
+});
+
 // --- destroy ---
 it('deletes a savings goal', function () {
     $goal = SavingsGoal::factory()->for($this->member)->create();

@@ -36,11 +36,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
     Route::get('/transactions', [TransactionController::class, 'index']);
     Route::post('/transactions', [TransactionController::class, 'store']);
 
     Route::get('/savings-goals', [SavingsGoalController::class, 'index']);
     Route::post('/savings-goals', [SavingsGoalController::class, 'store']);
+    Route::put('/savings-goals/{savingsGoal}', [SavingsGoalController::class, 'update']);
     Route::post('/savings-goals/{savingsGoal}/contribute', [SavingsGoalController::class, 'contribute']);
     Route::delete('/savings-goals/{savingsGoal}', [SavingsGoalController::class, 'destroy']);
 

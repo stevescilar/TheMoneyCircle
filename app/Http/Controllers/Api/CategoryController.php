@@ -30,6 +30,32 @@ class CategoryController extends Controller
         return response()->json($this->shape($category), 201);
     }
 
+    public function update(Request $request, Category $category)
+    {
+        abort_unless($category->member_id === $request->user()->id, 403);
+
+        $validated = $request->validate([
+            'name'           => 'sometimes|string|max:255',
+            'planned_amount' => 'sometimes|numeric|min:0',
+            'type'           => 'sometimes|in:expense,debt,emergency_fund,savings_goal,investment',
+            'period_start'   => 'sometimes|date',
+            'period_end'     => 'sometimes|date|after_or_equal:period_start',
+        ]);
+
+        $category->update($validated);
+
+        return response()->json($this->shape($category));
+    }
+
+    public function destroy(Request $request, Category $category)
+    {
+        abort_unless($category->member_id === $request->user()->id, 403);
+
+        $category->delete();
+
+        return response()->json(null, 204);
+    }
+
     private function shape(Category $category): array
     {
         return [

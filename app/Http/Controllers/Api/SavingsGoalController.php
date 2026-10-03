@@ -27,6 +27,21 @@ class SavingsGoalController extends Controller
         return response()->json($this->shape($goal), 201);
     }
 
+    public function update(Request $request, SavingsGoal $savingsGoal)
+    {
+        abort_unless($savingsGoal->member_id === $request->user()->id, 403);
+
+        $validated = $request->validate([
+            'goal_name'     => 'sometimes|string|max:255',
+            'target_amount' => 'sometimes|numeric|min:0',
+            'saved_amount'  => 'sometimes|numeric|min:0',
+        ]);
+
+        $savingsGoal->update($validated);
+
+        return response()->json($this->shape($savingsGoal->fresh()));
+    }
+
     public function contribute(Request $request, SavingsGoal $savingsGoal)
     {
         abort_unless($savingsGoal->member_id === $request->user()->id, 403);
