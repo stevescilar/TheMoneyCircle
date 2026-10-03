@@ -45,6 +45,13 @@ class EmergencyFundController extends Controller
 
     public function update(Request $request)
     {
+        if (empty($request->all()) && ! empty($request->getContent())) {
+            parse_str($request->getContent(), $parsed);
+            if (is_array($parsed)) {
+                $request->merge($parsed);
+            }
+        }
+
         $validated = $request->validate([
             'current_balance' => 'sometimes|numeric|min:0',
             'target_amount'   => 'sometimes|numeric|min:0',
@@ -52,10 +59,15 @@ class EmergencyFundController extends Controller
 
         $fund = $request->user()->emergencyFund;
 
-        abort_unless($fund, 404, 'No emergency fund set up yet.');
-
-        $fund->update($validated);
-        $fund->refresh();
+        if (! $fund) {
+            $fund = $request->user()->emergencyFund()->create(array_merge([
+                'target_amount'   => 0,
+                'current_balance' => 0,
+            ], $validated));
+        } else {
+            $fund->update($validated);
+            $fund->refresh();
+        }
 
         return response()->json([
             'target_amount' => (float) $fund->target_amount,

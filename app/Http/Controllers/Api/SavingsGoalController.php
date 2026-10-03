@@ -31,6 +31,13 @@ class SavingsGoalController extends Controller
     {
         abort_unless($savingsGoal->member_id === $request->user()->id, 403);
 
+        if (empty($request->all()) && ! empty($request->getContent())) {
+            parse_str($request->getContent(), $parsed);
+            if (is_array($parsed)) {
+                $request->merge($parsed);
+            }
+        }
+
         $validated = $request->validate([
             'goal_name'     => 'sometimes|string|max:255',
             'target_amount' => 'sometimes|numeric|min:0',

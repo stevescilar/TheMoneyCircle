@@ -34,6 +34,13 @@ class CategoryController extends Controller
     {
         abort_unless($category->member_id === $request->user()->id, 403);
 
+        if (empty($request->all()) && ! empty($request->getContent())) {
+            parse_str($request->getContent(), $parsed);
+            if (is_array($parsed)) {
+                $request->merge($parsed);
+            }
+        }
+
         $validated = $request->validate([
             'name'           => 'sometimes|string|max:255',
             'planned_amount' => 'sometimes|numeric|min:0',
@@ -44,7 +51,7 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return response()->json($this->shape($category));
+        return response()->json($this->shape($category->fresh()));
     }
 
     public function destroy(Request $request, Category $category)
