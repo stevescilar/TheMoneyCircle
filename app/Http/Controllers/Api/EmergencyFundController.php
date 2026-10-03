@@ -46,7 +46,8 @@ class EmergencyFundController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'current_balance' => 'required|numeric|min:0',
+            'current_balance' => 'sometimes|numeric|min:0',
+            'target_amount'   => 'sometimes|numeric|min:0',
         ]);
 
         $fund = $request->user()->emergencyFund;
