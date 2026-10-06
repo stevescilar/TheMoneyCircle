@@ -18,11 +18,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/app/version', function () {
     return response()->json([
-        'latest_version' => '1.0.2',
-        'latest_build' => 3,
+        'latest_version' => '1.0.3',
+        'latest_build' => 4,
         'minimum_required_version' => '1.0.0',
         'update_url' => 'https://moneycircle.microsilsystem.co.ke/downloads/TheMoneyCircle.apk',
-        'release_notes' => "• Dedicated Income Streams with full CRUD and source breakdown\n• Recurring monthly bills database tracking & payment logging\n• Category spending reset & monthly expenditure reset\n• Coach Back Office live synchronization",
+        'release_notes' => "• Automatic in-app update notifications on launch\n• Income Streams: Animated swipe gestures (Right: Edit, Left: Delete) & instant CRUD\n• Fixed income streams number/currency loading resilience\n• Recurring Bills manager (Rent, Electricity, Water)\n• Category spending reset & Coach Back Office synchronization",
         'force_update' => false,
     ]);
 });

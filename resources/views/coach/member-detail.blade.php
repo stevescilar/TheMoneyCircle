@@ -278,26 +278,27 @@
                                         <span class="text-brand-gold-dark font-extrabold shrink-0 mt-0.5">💬 Coach Advice:</span>
                                         <span class="italic">{{ $row['category']->coach_notes }}</span>
                                     </div>
-                                <!-- Recent Expenses Drill-Down -->
-                                @if(isset($row['recent_expenses']) && $row['recent_expenses']->isNotEmpty())
-                                    <details class="text-xs group border-t border-gray-100 pt-2">
-                                        <summary class="cursor-pointer text-[11px] font-bold text-gray-500 hover:text-brand-green flex items-center justify-between select-none">
-                                            <span>Recent Expenses logged ({{ $row['recent_expenses']->count() }})</span>
-                                            <svg class="w-3.5 h-3.5 transition-transform group-open:rotate-180 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                                        </summary>
-                                        <div class="mt-2 space-y-1.5 pl-2 border-l-2 border-brand-green/30">
-                                            @foreach($row['recent_expenses'] as $exp)
-                                                <div class="flex items-center justify-between text-[11px] text-gray-600 bg-white p-1.5 rounded-lg border border-gray-100 shadow-2xs">
-                                                    <span class="font-medium text-gray-800 truncate max-w-[200px]">{{ $exp->description ?: 'Expense' }}</span>
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="font-extrabold text-gray-900">Ksh {{ number_format($exp->amount, 0) }}</span>
-                                                        <span class="text-[10px] text-gray-400">{{ $exp->transacted_at ? $exp->transacted_at->format('d M') : '' }}</span>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </details>
                                 @endif
+                                <!-- Recent Expenses Drill-Down -->
+                                    @if(isset($row['recent_expenses']) && $row['recent_expenses']->isNotEmpty())
+                                        <details class="text-xs group border-t border-gray-100 pt-2">
+                                            <summary class="cursor-pointer text-[11px] font-bold text-gray-500 hover:text-brand-green flex items-center justify-between select-none">
+                                                <span>Recent Expenses logged ({{ $row['recent_expenses']->count() }})</span>
+                                                <svg class="w-3.5 h-3.5 transition-transform group-open:rotate-180 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                            </summary>
+                                            <div class="mt-2 space-y-1.5 pl-2 border-l-2 border-brand-green/30">
+                                                @foreach($row['recent_expenses'] as $exp)
+                                                    <div class="flex items-center justify-between text-[11px] text-gray-600 bg-white p-1.5 rounded-lg border border-gray-100 shadow-2xs">
+                                                        <span class="font-medium text-gray-800 truncate max-w-[200px]">{{ $exp->description ?: 'Expense' }}</span>
+                                                        <div class="flex items-center gap-2">
+                                                            <span class="font-extrabold text-gray-900">Ksh {{ number_format($exp->amount, 0) }}</span>
+                                                            <span class="text-[10px] text-gray-400">{{ $exp->transacted_at ? $exp->transacted_at->format('d M') : '' }}</span>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </details>
+                                    @endif
 
                                 <!-- Inline Coach Nudge / Comment Form -->
                                 <form method="POST" action="{{ route('members.categories.notes', [$member, $row['category']]) }}" class="pt-2 border-t border-gray-100 flex items-center gap-2">

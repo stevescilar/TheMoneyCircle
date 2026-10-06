@@ -17,7 +17,7 @@ class Transaction extends Model
 
     protected $casts = [
         'transacted_at' => 'date',
-        'amount' => 'decimal:2',
+        'amount' => 'float',
     ];
 
     public function member():BelongsTo
