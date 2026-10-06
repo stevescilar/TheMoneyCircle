@@ -58,9 +58,33 @@ class CategoryController extends Controller
     {
         abort_unless($category->member_id === $request->user()->id, 403);
 
+        $category->transactions()->delete();
         $category->delete();
 
+        // Also cleanup any orphaned expenses that have null or non-existent category_id
+        $validCategoryIds = $request->user()->categories()->pluck('id');
+        $request->user()->transactions()
+            ->where('type', 'expense')
+            ->where(function ($q) use ($validCategoryIds) {
+                $q->whereNull('category_id')
+                  ->orWhereNotIn('category_id', $validCategoryIds);
+            })
+            ->delete();
+
         return response()->json(null, 204);
+    }
+
+    public function resetSpending(Request $request, Category $category)
+    {
+        abort_unless($category->member_id === $request->user()->id, 403);
+
+        $deletedCount = $category->transactions()->delete();
+
+        return response()->json([
+            'message' => "Successfully reset spending for {$category->name}.",
+            'category' => $this->shape($category->fresh()),
+            'deleted_count' => $deletedCount,
+        ]);
     }
 
     private function shape(Category $category): array

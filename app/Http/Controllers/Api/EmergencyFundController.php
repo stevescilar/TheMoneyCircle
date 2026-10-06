@@ -94,4 +94,15 @@ class EmergencyFundController extends Controller
             'percent_funded' => (float) $fund->percentFunded(),
         ]);
     }
+
+    public function destroy(Request $request)
+    {
+        $fund = $request->user()->emergencyFund;
+
+        if ($fund) {
+            $fund->delete();
+        }
+
+        return response()->json(['message' => 'Emergency fund reset successfully']);
+    }
 }

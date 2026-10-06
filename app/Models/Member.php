@@ -55,6 +55,11 @@ class Member extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
 
+    public function recurringBills(): HasMany
+    {
+        return $this->hasMany(RecurringBill::class);
+    }
+
     public function totalBudgeted(): float
     {
         return (float) $this->categories()->sum('planned_amount');

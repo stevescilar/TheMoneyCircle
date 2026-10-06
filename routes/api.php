@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\InvestmentController;
 use App\Http\Controllers\Api\CommunityController;
 use App\Http\Controllers\Api\MonthlyReflectionController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\RecurringBillController;
 use App\Http\Controllers\Api\SavingsGoalController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,8 +39,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{category}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+    Route::post('/categories/{category}/reset-spending', [CategoryController::class, 'resetSpending']);
     Route::get('/transactions', [TransactionController::class, 'index']);
     Route::post('/transactions', [TransactionController::class, 'store']);
+    Route::put('/transactions/{transaction}', [TransactionController::class, 'update']);
+    Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy']);
+    Route::post('/transactions/reset-expenses', [TransactionController::class, 'resetExpenses']);
+
+    Route::get('/recurring-bills', [RecurringBillController::class, 'index']);
+    Route::post('/recurring-bills', [RecurringBillController::class, 'store']);
+    Route::put('/recurring-bills/{recurringBill}', [RecurringBillController::class, 'update']);
+    Route::delete('/recurring-bills/{recurringBill}', [RecurringBillController::class, 'destroy']);
+    Route::post('/recurring-bills/{recurringBill}/pay', [RecurringBillController::class, 'pay']);
 
     Route::get('/savings-goals', [SavingsGoalController::class, 'index']);
     Route::post('/savings-goals', [SavingsGoalController::class, 'store']);
@@ -63,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/emergency-fund', [EmergencyFundController::class, 'show']);
     Route::post('/emergency-fund', [EmergencyFundController::class, 'store']);
     Route::put('/emergency-fund', [EmergencyFundController::class, 'update']);
+    Route::delete('/emergency-fund', [EmergencyFundController::class, 'destroy']);
     Route::post('/emergency-fund/contribute', [EmergencyFundController::class, 'contribute']);
 
     Route::get('/monthly-reflections', [MonthlyReflectionController::class, 'index']);

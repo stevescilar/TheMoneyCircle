@@ -124,6 +124,91 @@
             <!-- LEFT COLUMN: Cash Flow & Day-to-Day Operations (7 Cols) -->
             <div class="lg:col-span-7 space-y-6">
 
+                <!-- Income Streams & Inflows -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <div>
+                            <h3 class="font-extrabold text-lg text-emerald-800 flex items-center gap-2">
+                                <span>💰</span> Income Streams
+                            </h3>
+                            <p class="text-xs text-gray-500">Track earnings, salary & side hustles</p>
+                        </div>
+                        <span class="text-xs font-black px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">
+                            Total: Ksh {{ number_format($vitals['total_income'], 0) }}
+                        </span>
+                    </div>
+
+                    <!-- Income by Source Chips -->
+                    @if($incomeBySource->isNotEmpty())
+                        <div class="flex flex-wrap gap-2">
+                            @foreach($incomeBySource as $sourceName => $data)
+                                <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs">
+                                    <span class="font-bold text-emerald-900">{{ $sourceName }}</span>
+                                    <span class="font-extrabold text-emerald-700">Ksh {{ number_format($data['total'], 0) }}</span>
+                                    <span class="text-[10px] text-emerald-600">({{ $data['count'] }})</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <!-- Recent Income Items -->
+                    <div class="space-y-2">
+                        @forelse($incomeTransactions->take(5) as $inc)
+                            <div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/70 border border-gray-100 text-xs">
+                                <div>
+                                    <span class="font-bold text-gray-900">{{ $inc->description ?: 'Income' }}</span>
+                                    <span class="text-[10px] text-gray-400 block">{{ $inc->transacted_at ? $inc->transacted_at->format('d M Y') : '' }}</span>
+                                </div>
+                                <span class="font-black text-emerald-700 text-sm">+Ksh {{ number_format($inc->amount, 0) }}</span>
+                            </div>
+                        @empty
+                            <p class="text-gray-400 text-xs italic py-2">No income entries recorded yet.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Recurring Monthly Bills & Fixed Commitments -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <div>
+                            <h3 class="font-extrabold text-lg text-gray-900 flex items-center gap-2">
+                                <span>🔄</span> Recurring Monthly Bills
+                            </h3>
+                            <p class="text-xs text-gray-500">Fixed commitments & monthly burn rate</p>
+                        </div>
+                        <span class="text-xs font-black px-3 py-1 rounded-full bg-brand-gold/20 text-brand-gold-dark">
+                            Burn Rate: Ksh {{ number_format($totalRecurringBills, 0) }}/mo
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        @forelse($recurringBills as $bill)
+                            <div class="p-3.5 rounded-xl border {{ $bill->isPaidThisMonth() ? 'border-emerald-200 bg-emerald-50/30' : 'border-gray-200 bg-gray-50/50' }} space-y-1.5">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-xs text-gray-900">{{ $bill->name }}</span>
+                                    @if($bill->isPaidThisMonth())
+                                        <span class="px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-emerald-100 text-emerald-800">
+                                            ✓ Paid This Month
+                                        </span>
+                                    @else
+                                        <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800">
+                                            Due Day {{ $bill->due_day }}
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="flex items-baseline justify-between">
+                                    <span class="text-sm font-extrabold text-gray-900">Ksh {{ number_format($bill->amount, 0) }}</span>
+                                    @if($bill->category)
+                                        <span class="text-[10px] text-gray-400">{{ $bill->category->name }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-gray-400 text-xs italic col-span-2 py-2">No recurring bills set up yet.</p>
+                        @endforelse
+                    </div>
+                </div>
+
                 <!-- Budget Categories & Granular Coach Nudges -->
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
                     <div class="flex items-center justify-between border-b border-gray-100 pb-3">
@@ -193,6 +278,25 @@
                                         <span class="text-brand-gold-dark font-extrabold shrink-0 mt-0.5">💬 Coach Advice:</span>
                                         <span class="italic">{{ $row['category']->coach_notes }}</span>
                                     </div>
+                                <!-- Recent Expenses Drill-Down -->
+                                @if(isset($row['recent_expenses']) && $row['recent_expenses']->isNotEmpty())
+                                    <details class="text-xs group border-t border-gray-100 pt-2">
+                                        <summary class="cursor-pointer text-[11px] font-bold text-gray-500 hover:text-brand-green flex items-center justify-between select-none">
+                                            <span>Recent Expenses logged ({{ $row['recent_expenses']->count() }})</span>
+                                            <svg class="w-3.5 h-3.5 transition-transform group-open:rotate-180 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                        </summary>
+                                        <div class="mt-2 space-y-1.5 pl-2 border-l-2 border-brand-green/30">
+                                            @foreach($row['recent_expenses'] as $exp)
+                                                <div class="flex items-center justify-between text-[11px] text-gray-600 bg-white p-1.5 rounded-lg border border-gray-100 shadow-2xs">
+                                                    <span class="font-medium text-gray-800 truncate max-w-[200px]">{{ $exp->description ?: 'Expense' }}</span>
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="font-extrabold text-gray-900">Ksh {{ number_format($exp->amount, 0) }}</span>
+                                                        <span class="text-[10px] text-gray-400">{{ $exp->transacted_at ? $exp->transacted_at->format('d M') : '' }}</span>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </details>
                                 @endif
 
                                 <!-- Inline Coach Nudge / Comment Form -->
@@ -672,6 +776,23 @@
                             <p class="text-gray-400 text-xs italic py-2">No investments recorded yet.</p>
                         @endforelse
                     </div>
+
+                    @if(isset($investments) && $investments->isNotEmpty())
+                        <div class="pt-3 border-t border-gray-100 space-y-2">
+                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-gray-400 block">Individual Accounts & Providers</span>
+                            @foreach($investments as $inv)
+                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/70 border border-gray-100 text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold {{ strtoupper($inv->type) === 'MMF' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
+                                            {{ strtoupper($inv->type) }}
+                                        </span>
+                                        <span class="font-bold text-gray-900">{{ $inv->label }}</span>
+                                    </div>
+                                    <span class="font-extrabold text-gray-900">Ksh {{ number_format($inv->balance, 0) }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
 
             </div>

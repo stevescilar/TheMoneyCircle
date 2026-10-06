@@ -22,6 +22,7 @@ class MemberDetailController extends Controller
             'remaining'    => $category->remaining(),
             'percent'      => $category->percentageComplete(),
             'is_overspent' => $category->spent() > (float) $category->planned_amount,
+            'recent_expenses' => $category->transactions()->where('type', 'expense')->orderByDesc('transacted_at')->take(8)->get(),
         ]);
 
         // Segregate active loans from cleared/paid-off loans
@@ -44,22 +45,46 @@ class MemberDetailController extends Controller
         $totalSpent = (float) $member->totalSpent();
         $netCashflow = $totalIncome - $totalSpent;
 
+        $incomeTransactions = $member->transactions()
+            ->where('type', 'income')
+            ->orderByDesc('transacted_at')
+            ->get();
+
+        $incomeBySource = $incomeTransactions->groupBy(function ($item) {
+            $desc = trim($item->description ?? '');
+            if (empty($desc)) return 'Other Income';
+            if (str_contains($desc, ':')) {
+                return trim(explode(':', $desc)[0]);
+            }
+            return $desc;
+        })->map(fn ($group) => [
+            'total' => (float) $group->sum('amount'),
+            'count' => $group->count(),
+        ]);
+
+        $recurringBills = $member->recurringBills()->with('category')->orderBy('due_day')->get();
+        $totalRecurringBills = (float) $recurringBills->where('is_active', true)->sum('amount');
+
         $monthlyExpensesBenchmark = $member->totalBudgeted() > 0 ? $member->totalBudgeted() : ($totalSpent > 0 ? $totalSpent : 0);
         $emergencyRunwayMonths = $monthlyExpensesBenchmark > 0 ? round($emergencyBalance / $monthlyExpensesBenchmark, 1) : 0;
 
         return view('coach.member-detail', [
-            'member'            => $member,
-            'categories'        => $categories,
-            'debts'             => $activeDebts,
-            'clearedDebts'      => $clearedDebts,
-            'totalDebt'         => $totalDebt,
-            'emergencyFund'     => $member->emergencyFund,
-            'savingsGoals'      => $member->savingsGoals,
-            'investments'       => $member->investments,
-            'totalInvestments'  => $totalInvestments,
-            'investmentsByType' => $member->investmentsByType(),
-            'reflections'       => $member->monthlyReflections()->orderByDesc('period_month')->get(),
-            'vitals'            => [
+            'member'               => $member,
+            'categories'           => $categories,
+            'debts'                => $activeDebts,
+            'clearedDebts'         => $clearedDebts,
+            'totalDebt'            => $totalDebt,
+            'emergencyFund'        => $member->emergencyFund,
+            'savingsGoals'         => $member->savingsGoals,
+            'investments'          => $member->investments,
+            'totalInvestments'     => $totalInvestments,
+            'investmentsByType'    => $member->investmentsByType(),
+            'incomeTransactions'   => $incomeTransactions,
+            'incomeBySource'       => $incomeBySource,
+            'recurringBills'       => $recurringBills,
+            'totalRecurringBills'  => $totalRecurringBills,
+            'reflections'          => $member->monthlyReflections()->orderByDesc('period_month')->get(),
+            'vitals'               => [
                 'total_assets'            => $totalAssets,
                 'estimated_net_worth'     => $estimatedNetWorth,
                 'total_income'            => $totalIncome,
