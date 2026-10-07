@@ -91,8 +91,8 @@ The live production application is hosted at **`https://moneycircle.microsilsyst
 ## 👨‍💻 Developer & Support
 
 ```text
-Developed by:Muambi.Dev @ microsil systems
-Tel: 0793800603
+Developed by: Muambi.Dev @ Microsil System
+Call / WhatsApp: 0793800603
 Email: solutions@microsilsystem.co.ke
 Web: https://microsilsystem.co.ke
 ```
