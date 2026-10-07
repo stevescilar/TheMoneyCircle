@@ -82,46 +82,17 @@ Access the application at `http://localhost:8000`.
 
 ---
 
-## 🌐 cPanel Production Deployment
+## 🌐 Find It Here
 
-The live production application is hosted at **`https://moneycircle.microsilsystem.co.ke/`** and connected directly to this Git repository (`origin/main`).
-
-### Deploying Updates via cPanel Terminal
-```bash
-cd ~/public_html
-# 1. Pull latest code from GitHub
-git pull origin main
-
-# 2. Run new database migrations safely (does not delete existing data)
-php artisan migrate --force
-
-# 3. Clear and optimize application caches
-php artisan optimize:clear
-```
-
-*(Alternatively, in cPanel **Git™ Version Control**, navigate to `TheMoneyCircle` ➔ **Pull or Deploy** ➔ **Update from Remote**).*
-
+The live production application is hosted at **`https://moneycircle.microsilsystem.co.ke/`** 
 ---
 
-## 📁 Key File Locations
-
-| Path | Purpose |
-| :--- | :--- |
-| `routes/api.php` | Mobile API endpoints and version handshake |
-| `routes/web.php` | Coach routes, downloads, and `/app` web app router |
-| `app/Models/` | Eloquent models (Member, RecurringBill, Transaction, etc.) |
-| `app/Http/Controllers/Api/` | API controllers handling mobile data flows |
-| `resources/views/welcome.blade.php` | Landing page with APK and Web App launch CTAs |
-| `public/downloads/TheMoneyCircle.apk` | Release Android APK distributed to members |
-| `public/app/` | Compiled Flutter Web application (PWA for iPhone / desktop) |
-
----
 
 ## 👨‍💻 Developer & Support
 
 ```text
-developed by: microsil systems
-tel: 0793800603
-email: solutions@microsilsystem.co.ke
-web: https://microsilsystem.co.ke
+Developed by:Muambi.Dev @ microsil systems
+Tel: 0793800603
+Email: solutions@microsilsystem.co.ke
+Web: https://microsilsystem.co.ke
 ```
