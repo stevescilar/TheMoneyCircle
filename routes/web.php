@@ -83,3 +83,7 @@ Route::get("/downloads/the-money-circle.apk", function () {
 Route::get("/download", function () {
     return redirect("/#download");
 })->name("download.page");
+
+Route::get('/app', function () {
+    return redirect('/app/');
+})->name('app.web');

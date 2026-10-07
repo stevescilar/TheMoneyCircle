@@ -41,8 +41,7 @@
 
     <!-- Top Announcement Bar -->
     <div class="bg-brand-green-dark text-white text-xs py-2 px-4 text-center font-medium border-b border-emerald-950/40">
-        <span>✨ The Money Circle Android App v1.0 is now live for Circle Members.</span>
-        <a href="#download" class="underline text-brand-gold-light ml-1.5 hover:text-white transition-colors">Download free below &darr;</a>
+        <span>✨ The Money Circle is live for all Members! Download for Android or Launch on iPhone / Web below &darr;</span>
     </div>
 
     <!-- Navigation -->
@@ -59,15 +58,20 @@
             </a>
 
             <!-- Nav Actions -->
-            <div class="flex items-center gap-3">
-                <a href="#how-it-works" class="hidden sm:inline-block text-xs font-semibold text-gray-600 hover:text-brand-green transition-colors px-3 py-2">
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                <a href="#how-it-works" class="hidden sm:inline-block text-xs font-semibold text-gray-600 hover:text-brand-green transition-colors px-2 py-2">
                     How It Works
                 </a>
-                <a href="#install-guide" class="hidden sm:inline-block text-xs font-semibold text-gray-600 hover:text-brand-green transition-colors px-3 py-2">
+                <a href="#install-guide" class="hidden sm:inline-block text-xs font-semibold text-gray-600 hover:text-brand-green transition-colors px-2 py-2">
                     Install Guide
                 </a>
                 
-                <a href="#download" class="inline-flex items-center gap-2 bg-brand-green text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-brand-green-light transition-all shadow-sm shadow-brand-green/20">
+                <a href="{{ url('/app/') }}" target="_blank" class="inline-flex items-center gap-1.5 border border-brand-green/30 bg-emerald-50/50 hover:bg-emerald-100/60 text-brand-green-dark text-xs font-bold px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl transition-all shadow-2xs">
+                    <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    <span>Web (iPhone)</span>
+                </a>
+
+                <a href="#download" class="inline-flex items-center gap-1.5 bg-brand-green text-white text-xs font-bold px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl hover:bg-brand-green-light transition-all shadow-sm shadow-brand-green/20">
                     <svg class="w-4 h-4 text-brand-gold" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                     </svg>
@@ -106,27 +110,44 @@
                     </p>
 
                     <!-- CTAs -->
-                    <div id="download" class="mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                    <div id="download" class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 justify-center lg:justify-start">
+                        <!-- Android APK Button -->
                         <a href="{{ url('/downloads/TheMoneyCircle.apk') }}" 
-                           class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-brand-green hover:bg-brand-green-light active:scale-[0.98] text-white px-7 py-4 rounded-2xl font-bold text-base shadow-xl shadow-brand-green/20 transition-all group">
+                           class="inline-flex items-center justify-center gap-3 bg-brand-green hover:bg-brand-green-light active:scale-[0.98] text-white px-6 py-3.5 rounded-2xl font-bold text-sm shadow-xl shadow-brand-green/20 transition-all group">
                             <svg class="w-6 h-6 text-brand-gold-light group-hover:translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                             </svg>
                             <div class="text-left leading-tight">
-                                <span class="block text-[11px] text-emerald-200 font-semibold uppercase tracking-wider">Direct Android Download</span>
-                                <span class="block text-base font-extrabold">Download APK (v1.0)</span>
+                                <span class="block text-[10px] text-emerald-200 font-semibold uppercase tracking-wider">Direct Android Download</span>
+                                <span class="block text-base font-extrabold">Download APK</span>
                             </div>
                         </a>
 
-                        <div class="text-xs text-gray-500 flex flex-col items-center lg:items-start">
-                            <span class="flex items-center gap-1 font-semibold text-gray-700">
-                                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                Verified Clean • Size: ~24 MB
-                            </span>
-                            <span class="mt-0.5 text-gray-500">Android 8.0 or newer</span>
-                        </div>
+                        <!-- iPhone & Web App Button -->
+                        <a href="{{ url('/app/') }}" target="_blank"
+                           class="inline-flex items-center justify-center gap-3 bg-white hover:bg-emerald-50/70 border-2 border-brand-green text-brand-green-dark active:scale-[0.98] px-6 py-3.5 rounded-2xl font-bold text-sm shadow-md transition-all group">
+                            <svg class="w-6 h-6 text-brand-gold-dark group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                            <div class="text-left leading-tight">
+                                <span class="block text-[10px] text-gray-500 font-semibold uppercase tracking-wider">iPhone, iPad & Web</span>
+                                <span class="block text-base font-extrabold text-brand-green-dark">Open Web App</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Platform note -->
+                    <div class="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 justify-center lg:justify-start text-xs text-gray-500">
+                        <span class="flex items-center gap-1 font-semibold text-gray-700">
+                            <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Android: APK ~54 MB
+                        </span>
+                        <span class="text-gray-300 hidden sm:inline">&bull;</span>
+                        <span class="flex items-center gap-1 font-semibold text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/50">
+                            🍏 iPhone: Tap Safari Share &rarr; "Add to Home Screen"
+                        </span>
                     </div>
 
                     <!-- Coach Signoff -->
@@ -281,55 +302,110 @@
             </div>
         </section>
 
-        <!-- Install Guide (How to install APK on Android) -->
+        <!-- Install Guide (How to install APK on Android & Add to Home Screen on iPhone) -->
         <section id="install-guide" class="py-16 sm:py-20 max-w-5xl mx-auto px-4 sm:px-6">
-            <div class="bg-emerald-50/60 rounded-3xl p-8 sm:p-12 border border-emerald-100">
-                <div class="max-w-2xl">
-                    <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Quick & Safe Installation</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-green-dark tracking-tight mt-1">
-                        How to install on your Android phone
-                    </h2>
-                    <p class="mt-3 text-xs sm:text-sm text-gray-600 leading-relaxed">
-                        Because you are downloading the direct APK from our secure portal, Android will simply ask for permission to install it. It takes under 30 seconds:
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
-                    
-                    <div class="bg-white p-5 rounded-2xl border border-emerald-100 shadow-xs">
-                        <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 1</span>
-                        <h4 class="font-bold text-sm text-gray-900 mt-3">Download the APK</h4>
-                        <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
-                            Tap the <b>Download APK</b> button. Your browser will start downloading the file.
+            <div class="space-y-10">
+                
+                <!-- iPhone / iOS Guide -->
+                <div class="bg-gradient-to-br from-amber-50/70 to-emerald-50/60 rounded-3xl p-8 sm:p-12 border border-amber-200/60 shadow-xs">
+                    <div class="max-w-2xl">
+                        <span class="text-xs font-bold text-brand-gold-dark uppercase tracking-wider flex items-center gap-1.5">
+                            <span>🍏</span> For iPhone & iPad Users
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-green-dark tracking-tight mt-1">
+                            Install on your iPhone in 3 taps (No App Store needed)
+                        </h2>
+                        <p class="mt-2 text-xs sm:text-sm text-gray-600 leading-relaxed">
+                            Apple does not allow downloading raw installer files, but The Money Circle Web App installs directly to your iPhone home screen as a full-screen app:
                         </p>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-emerald-100 shadow-xs">
-                        <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 2</span>
-                        <h4 class="font-bold text-sm text-gray-900 mt-3">Allow Installation</h4>
-                        <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
-                            If Android displays a prompt, tap <b>Settings</b> and toggle on <b>"Allow from this source"</b>.
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-8">
+                        <div class="bg-white p-5 rounded-2xl border border-amber-200/50 shadow-xs">
+                            <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 1</span>
+                            <h4 class="font-bold text-sm text-gray-900 mt-3">Open in Safari</h4>
+                            <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
+                                Tap <b>Open Web App</b> or visit <code class="text-[11px] text-brand-green font-bold">moneycircle...ke/app</code> in Safari on your iPhone.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-amber-200/50 shadow-xs">
+                            <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 2</span>
+                            <h4 class="font-bold text-sm text-gray-900 mt-3">Tap Safari Share</h4>
+                            <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
+                                Tap the <b>Share icon</b> (the square with an arrow pointing up at the bottom of Safari).
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-amber-200/50 shadow-xs">
+                            <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 3</span>
+                            <h4 class="font-bold text-sm text-gray-900 mt-3">Add to Home Screen</h4>
+                            <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
+                                Scroll down and tap <b>"Add to Home Screen"</b> &rarr; tap <b>Add</b>. The Money Circle app icon will appear on your phone!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-amber-200/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-xs text-gray-600">
+                            Once added, tapping the icon launches the app full-screen without any browser address bar.
+                        </p>
+                        <a href="{{ url('/app/') }}" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold text-brand-green hover:text-brand-green-dark bg-white px-4 py-2 rounded-xl border border-brand-green/30 shadow-2xs">
+                            <span>Launch iPhone Web App Now</span> &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Android APK Guide -->
+                <div class="bg-emerald-50/60 rounded-3xl p-8 sm:p-12 border border-emerald-100">
+                    <div class="max-w-2xl">
+                        <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>🤖</span> For Android Users
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-green-dark tracking-tight mt-1">
+                            How to install APK on your Android phone
+                        </h2>
+                        <p class="mt-2 text-xs sm:text-sm text-gray-600 leading-relaxed">
+                            Because you are downloading the direct APK file from our secure portal, Android will ask for permission to install it. It takes under 30 seconds:
                         </p>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-emerald-100 shadow-xs">
-                        <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 3</span>
-                        <h4 class="font-bold text-sm text-gray-900 mt-3">Open & Log In</h4>
-                        <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
-                            Tap <b>Install</b>, open the app, and log in with your registered member email and password.
-                        </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-8">
+                        <div class="bg-white p-5 rounded-2xl border border-emerald-100 shadow-xs">
+                            <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 1</span>
+                            <h4 class="font-bold text-sm text-gray-900 mt-3">Download the APK</h4>
+                            <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
+                                Tap the <b>Download APK</b> button. Your browser will start downloading the file.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-emerald-100 shadow-xs">
+                            <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 2</span>
+                            <h4 class="font-bold text-sm text-gray-900 mt-3">Allow Installation</h4>
+                            <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
+                                If Android displays a prompt, tap <b>Settings</b> and toggle on <b>"Allow from this source"</b>.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-emerald-100 shadow-xs">
+                            <span class="text-xs font-extrabold text-brand-gold bg-amber-50 px-2.5 py-1 rounded-md">STEP 3</span>
+                            <h4 class="font-bold text-sm text-gray-900 mt-3">Open & Log In</h4>
+                            <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
+                                Tap <b>Install</b>, open the app, and log in with your registered member email and password.
+                            </p>
+                        </div>
                     </div>
 
+                    <div class="mt-8 pt-6 border-t border-emerald-200/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-xs text-gray-600">
+                            Need help or didn't get your login credentials yet? Ask in the circle WhatsApp group.
+                        </p>
+                        <a href="{{ url('/downloads/TheMoneyCircle.apk') }}" class="inline-flex items-center gap-2 text-xs font-bold text-brand-green hover:text-brand-green-dark">
+                            <span>Download APK File Now</span> &rarr;
+                        </a>
+                    </div>
                 </div>
 
-                <div class="mt-8 pt-6 border-t border-emerald-200/60 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p class="text-xs text-gray-600">
-                        Need help or didn't get your login credentials yet? Ask in the circle WhatsApp group.
-                    </p>
-                    <a href="{{ url('/downloads/TheMoneyCircle.apk') }}" class="inline-flex items-center gap-2 text-xs font-bold text-brand-green hover:text-brand-green-dark">
-                        <span>Download APK File Now</span> &rarr;
-                    </a>
-                </div>
             </div>
         </section>
 
@@ -344,7 +420,7 @@
             </div>
             <div class="flex items-center gap-6">
                 <a href="#download" class="hover:text-brand-green transition-colors font-semibold">Download Android App</a>
-                
+                <a href="{{ url('/app/') }}" target="_blank" class="hover:text-brand-green transition-colors font-semibold">Launch Web App (iPhone)</a>
             </div>
         </div>
     </footer>
