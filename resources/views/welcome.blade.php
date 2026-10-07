@@ -422,6 +422,12 @@
                 <a href="#download" class="hover:text-brand-green transition-colors font-semibold">Download Android App</a>
                 <a href="{{ url('/app/') }}" target="_blank" class="hover:text-brand-green transition-colors font-semibold">Launch Web App (iPhone)</a>
             </div>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 pt-6 border-t border-gray-100 text-center font-mono text-[11px] text-gray-500">
+            <span>developed by: <strong class="text-gray-700 font-semibold">microsil systems</strong></span>
+            <span class="mx-2 text-gray-300">&bull;</span>
+            <a href="tel:0793800603" class="hover:text-brand-green transition-colors">tel: 0793800603</a>
+            <span class="mx-2 text-gray-300">&bull;</span>
+            <a href="mailto:solutions@microsilsystem.co.ke" class="hover:text-brand-green transition-colors">solutions@microsilsystem.co.ke</a>
         </div>
     </footer>
 
