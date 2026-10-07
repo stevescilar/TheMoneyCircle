@@ -1,58 +1,127 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# The Money Circle — Backend API & Coach Back Office
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?logo=php&logoColor=white)](https://php.net)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![Live Production](https://img.shields.io/badge/Live-moneycircle.microsilsystem.co.ke-success)](https://moneycircle.microsilsystem.co.ke)
+[![License](https://img.shields.io/badge/License-Proprietary-red)](#)
 
-## About Laravel
+The central server engine, RESTful API, Coach administration portal, and distribution hub for **The Money Circle** financial coaching platform in Kenya.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🏛️ System Architecture
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. RESTful Mobile API (`/api/*`)
+* **Sanctum Authentication**: Secure bearer token issuance, registration, verification codes, and profile management.
+* **Dashboard Aggregations**: Net cashflow, total monthly expenditure, total income, and remaining category budgets.
+* **Income & Transactions Engine**: Flexible transaction storage supporting income streams and categorized expenses with resilient float serialization.
+* **Recurring Bills Management**: Full CRUD (`/api/recurring-bills`) supporting monthly utility tracking, due date reminders, and payment logging.
+* **Budget Categories & Reset Utilities**: Endpoints for category spending reset (`/categories/{id}/reset-spending`) and total expense reset (`/transactions/reset-expenses`).
+* **Wealth Tracking**: Endpoints for Debts, Emergency Funds (MMF), Savings Goals, and Investments.
+* **In-App Auto-Update Handshake**: `/api/app/version` delivers the latest version numbers, build counters, forced-update flags, and release notes to active client apps.
 
-## Learning Laravel
+### 2. Coach Back Office (`/coach-dashboard`)
+* **Member Overview & Analytics**: Inspect active member net cashflow, monthly expenditure vs budget, and debt loads.
+* **Financial Drill-Downs**: Drill into individual member categories, recent expense lists, recurring utility commitments, and income breakdowns.
+* **Direct Advice & Nudges**: Leave contextual coaching notes and feedback directly on a member’s reflection or budget category.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 3. Community Operations Suite (`/coach/*`)
+* **Announcements**: Broadcast pinned alerts with custom action links to the mobile and web app.
+* **Live Sessions**: Schedule coaching calls and webinars.
+* **Resource Library**: Upload and manage financial templates, guides, and worksheets.
+* **Q&A Desk**: Review and answer financial questions submitted by circle members.
+* **Wins Wall**: Moderate financial milestones and celebrate debt-free achievements.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 4. Public Web Portal & App Distribution
+* **Responsive Landing Page**: Built in Blade with Tailwind CSS (`resources/views/welcome.blade.php`).
+* **Direct Android Distribution**: Serves [`/downloads/TheMoneyCircle.apk`](file:///d:/Projects/TheMoneyCircle/public/downloads/TheMoneyCircle.apk) directly from the server.
+* **Progressive Web App (PWA) Host**: Serves the compiled Flutter Web App inside [`/app/`](file:///d:/Projects/TheMoneyCircle/public/app/) with `.htaccess` SPA fallback routing, giving iPhone users a full-screen app without App Store installation.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 🚀 Local Development Setup
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Prerequisites
+* PHP 8.2 or newer
+* Composer 2.x
+* MySQL or SQLite
 
+### 1. Installation
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/stevescilar/TheMoneyCircle.git
+cd TheMoneyCircle
+composer install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Environment Configuration
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+Configure your database settings in `.env`:
+```ini
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=moneycircle_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Contributing
+### 3. Run Database Migrations
+```bash
+php artisan migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Start Local Server
+```bash
+php artisan serve
+```
+Access the application at `http://localhost:8000`.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🌐 cPanel Production Deployment
 
-## Security Vulnerabilities
+The live production application is hosted at **`https://moneycircle.microsilsystem.co.ke/`** and connected directly to this Git repository (`origin/main`).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Deploying Updates via cPanel Terminal
+```bash
+cd ~/public_html
+# 1. Pull latest code from GitHub
+git pull origin main
 
-## License
+# 2. Run new database migrations safely (does not delete existing data)
+php artisan migrate --force
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 3. Clear and optimize application caches
+php artisan optimize:clear
+```
+
+*(Alternatively, in cPanel **Git™ Version Control**, navigate to `TheMoneyCircle` ➔ **Pull or Deploy** ➔ **Update from Remote**).*
+
+---
+
+## 📁 Key File Locations
+
+| Path | Purpose |
+| :--- | :--- |
+| `routes/api.php` | Mobile API endpoints and version handshake |
+| `routes/web.php` | Coach routes, downloads, and `/app` web app router |
+| `app/Models/` | Eloquent models (Member, RecurringBill, Transaction, etc.) |
+| `app/Http/Controllers/Api/` | API controllers handling mobile data flows |
+| `resources/views/welcome.blade.php` | Landing page with APK and Web App launch CTAs |
+| `public/downloads/TheMoneyCircle.apk` | Release Android APK distributed to members |
+| `public/app/` | Compiled Flutter Web application (PWA for iPhone / desktop) |
+
+---
+
+## 👨‍💻 Developer & Support
+
+```text
+developed by: microsil systems
+tel: 0793800603
+email: solutions@microsilsystem.co.ke
+web: https://microsilsystem.co.ke
+```
